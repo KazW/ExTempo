@@ -1,0 +1,14 @@
+{
+  "name": "I'ma Prompt You",
+  "addons": [
+    "logdna"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/KazW/nginx-buildpack"
+    }
+  ]
+}
