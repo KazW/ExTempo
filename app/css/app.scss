@@ -1,8 +1,12 @@
 $roboto-font-path: "~materialize-css/fonts/roboto/";
 
-@import "materialize-css/sass/materialize";
+@import "_materialize";
 
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+}
+
+h3.trimmed {
+  margin: 0;
 }

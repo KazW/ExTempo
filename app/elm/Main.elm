@@ -1,9 +1,10 @@
-module Main exposing (..)
+module Main exposing (main)
 
-import Html exposing (Html, programWithFlags)
 import Main.Models as Models exposing (..)
 import Main.Ports as Ports exposing (..)
-import Main.Pages as Pages exposing (..)
+import Main.Views as Views exposing (view)
+import Main.Updates as Updates exposing (update)
+import Html exposing (Html, programWithFlags)
 import Time exposing (Time, every, second)
 
 
@@ -13,29 +14,6 @@ import Time exposing (Time, every, second)
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( initModel flags, initPort "" )
-
-
-
--- VIEW
-
-
-view : Model -> Html Msg
-view model =
-    pages model
-
-
-
--- UPDATE
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        NoOp ->
-            model ! []
-
-        Tick time ->
-            { model | currentTime = Just time } ! []
 
 
 
