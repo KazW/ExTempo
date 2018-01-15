@@ -9,7 +9,7 @@ import Html.Events exposing (..)
 headerText : Model -> String
 headerText model =
     if model.action == Speaking then
-        model.talk.name
+        model.talk.title
     else
         "Plan a Talk"
 

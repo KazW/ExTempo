@@ -29,3 +29,8 @@ secondsToMinutes time =
 secondsToHours : Int -> Int
 secondsToHours time =
     time // secondsInHour
+
+
+minutesToSeconds : Int -> Int
+minutesToSeconds minutes =
+    minutes * secondsInMinute

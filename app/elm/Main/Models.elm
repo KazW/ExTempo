@@ -9,19 +9,23 @@ initModel flags_ =
     { talkTime = 0
     , apiUrl = flags_.apiUrl
     , talk =
-        { name = ""
+        { title = ""
         , duration = 0
         , sections = Dict.empty
         }
     , action = Reviewing
     , newEntry =
-        { name = ""
-        , previousName = ""
-        , seconds = 0
-        , minutes = 0
-        , position = 0
-        , entryType = TalkType
-        }
+        blankEntry
+    }
+
+
+blankEntry : NewEntry
+blankEntry =
+    { title = ""
+    , seconds = 0
+    , minutes = 0
+    , position = 0
+    , entryType = TalkType
     }
 
 
@@ -43,14 +47,14 @@ type alias Model =
 
 
 type alias Talk =
-    { name : String
+    { title : String
     , duration : Int
     , sections : Dict String Section
     }
 
 
 type alias Section =
-    { name : String
+    { title : String
     , duration : Int
     , start : Int
     , end : Int
@@ -59,7 +63,7 @@ type alias Section =
 
 
 type alias Subtopic =
-    { name : String
+    { title : String
     , duration : Int
     , start : Int
     , end : Int
@@ -67,8 +71,7 @@ type alias Subtopic =
 
 
 type alias NewEntry =
-    { name : String
-    , previousName : String
+    { title : String
     , minutes : Int
     , seconds : Int
     , position : Int
@@ -84,8 +87,14 @@ type Action
 
 type EntryType
     = TalkType
-    | SectionType String
-    | SubtopicType String String
+    | SectionType Maybe String
+    | SubtopicType String Maybe String
+
+
+type NewInput
+    = Title String
+    | Minutes String
+    | Seconds String
 
 
 type Msg
@@ -96,3 +105,4 @@ type Msg
     | ClearEntry
     | StartTalk
     | StopTalk
+    | UserInput NewInput
