@@ -33,6 +33,7 @@
     "webpack-merge": "^3.0.0"
   },
   "devDependencies": {
+    "elm-format": "^0.6.1-alpha",
     "elm-hot-loader": "^0.5.4",
     "express": "^4.14.1",
     "webpack-dev-server": "^2.4.1"

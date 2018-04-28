@@ -64,7 +64,7 @@ editingView model =
                 ]
             , a
                 [ class "waves-effect waves-green btn-flat"
-                , onClick SaveEntry
+                , onClick ValidateEntry
                 ]
                 [ i [ class "material-icons" ]
                     [ text "check" ]

@@ -6,16 +6,16 @@ import Dict exposing (..)
 
 initModel : Flags -> Model
 initModel flags_ =
-    { talkTime = 0
-    , apiUrl = flags_.apiUrl
+    { apiUrl = flags_.apiUrl
     , talk =
         { title = ""
         , duration = 0
         , sections = Dict.empty
+        , frames = []
+        , time = 0
         }
     , action = Reviewing
-    , newEntry =
-        blankEntry
+    , newEntry = blankEntry
     }
 
 
@@ -24,8 +24,15 @@ blankEntry =
     { title = ""
     , seconds = 0
     , minutes = 0
-    , position = 0
     , entryType = TalkType
+    }
+
+
+blankSection : Section
+blankSection =
+    { title = ""
+    , duration = 0
+    , points = Dict.empty
     }
 
 
@@ -39,7 +46,6 @@ type alias Flags =
 
 type alias Model =
     { apiUrl : String
-    , talkTime : Int
     , talk : Talk
     , action : Action
     , newEntry : NewEntry
@@ -49,24 +55,31 @@ type alias Model =
 type alias Talk =
     { title : String
     , duration : Int
-    , sections : Dict String Section
+    , sections : Dict Int Section
+    , frames : List Frame
+    , time : Int
+    }
+
+
+type alias Frame =
+    { section : String
+    , point : String
+    , dutation : Int
+    , start : Int
+    , end : Int
     }
 
 
 type alias Section =
     { title : String
     , duration : Int
-    , start : Int
-    , end : Int
-    , subtopics : Dict String Subtopic
+    , points : Dict Int Point
     }
 
 
-type alias Subtopic =
+type alias Point =
     { title : String
     , duration : Int
-    , start : Int
-    , end : Int
     }
 
 
@@ -74,7 +87,6 @@ type alias NewEntry =
     { title : String
     , minutes : Int
     , seconds : Int
-    , position : Int
     , entryType : EntryType
     }
 
@@ -87,8 +99,8 @@ type Action
 
 type EntryType
     = TalkType
-    | SectionType Maybe String
-    | SubtopicType String Maybe String
+    | SectionType (Maybe Int)
+    | PointType Int (Maybe Int)
 
 
 type NewInput
@@ -101,7 +113,7 @@ type Msg
     = NoOp
     | Tick Time
     | EditEntry EntryType
-    | SaveEntry
+    | ValidateEntry
     | ClearEntry
     | StartTalk
     | StopTalk

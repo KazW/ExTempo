@@ -11,20 +11,35 @@ reviewingView : Model -> Html Msg
 reviewingView model =
     div [ class "container" ]
         [ div [ class "row" ]
-            [ div [ class "col s4 right-align" ] [ h3 [ class "trimmed" ] [ text "Main Topic:" ] ]
-            , div [ class "col s8" ] [ h3 [ class "trimmed" ] [ text model.talk.title ] ]
-            ]
-        , div [ class "row" ]
-            [ div [ class "col s4 right-align" ] [ h3 [ class "trimmed" ] [ text "Duration:" ] ]
-            , div [ class "col s8" ] [ h3 [ class "trimmed" ] [ text (secondsToDuration model.talk.duration) ] ]
-            ]
-        , div [ class "row" ]
-            [ div [ class "col s4 right-align" ]
-                [ a
-                    [ class "btn-floating btn-large waves-effect waves-light"
+            [ h4 [ class "header" ]
+                [ text "Talk Options    "
+                , a
+                    [ class "btn-floating btn-med waves-effect waves-light"
                     , onClick (EditEntry TalkType)
                     ]
-                    [ i [ class "material-icons" ] [ text "edit" ] ]
+                    [ i [ class "medium material-icons" ] [ text "edit" ] ]
                 ]
+            , p [ class "caption" ] [ text "Set the main topic and total duration, both are required." ]
+            ]
+        , div [ class "row" ]
+            [ div [ class "row" ]
+                [ div [ class "col s12 m4 right-align" ] [ h5 [ class "trimmed" ] [ text "Main Topic:" ] ]
+                , div [ class "col s12 m8" ] [ p [] [ text model.talk.title ] ]
+                ]
+            , div [ class "row" ]
+                [ div [ class "col s12 m4 right-align" ] [ h5 [ class "trimmed" ] [ text "Duration:" ] ]
+                , div [ class "col s12 m8" ] [ p [] [ text (secondsToDuration model.talk.duration) ] ]
+                ]
+            ]
+        , div [ class "row" ]
+            [ h4 [ class "header" ]
+                [ text "Sections    "
+                , a
+                    [ class "btn-floating btn-med waves-effect waves-light"
+                    , onClick (EditEntry (SectionType Nothing))
+                    ]
+                    [ i [ class "medium material-icons" ] [ text "add" ] ]
+                ]
+            , p [ class "caption" ] [ text "Set the section topic and duration, both are required." ]
             ]
         ]
