@@ -21,7 +21,7 @@ deleteEntry model entryType =
                             talk
 
                         Just sectionIndex ->
-                            deleteSection sectionIndex talk
+                            { talk | sections = deleteAtIndex sectionIndex talk.sections }
 
                 PointType sectionIndex maybeIndex ->
                     case maybeIndex of
@@ -34,41 +34,26 @@ deleteEntry model entryType =
         { model | talk = newTalk } ! []
 
 
-rejectTarget : Int -> ( Int, anything ) -> Bool
-rejectTarget targetIndex ( sectionIndex, _ ) =
-    targetIndex /= sectionIndex
-
-
-deleteSection : Int -> Talk -> Talk
-deleteSection sectionIndex talk =
-    let
-        newSections =
-            talk.sections
-                |> Array.toIndexedList
-                |> List.filter (\pair -> (rejectTarget sectionIndex pair))
-                |> List.map (\( _, section ) -> section)
-                |> Array.fromList
-    in
-        { talk | sections = newSections }
-
-
 deletePoint : Int -> Int -> Talk -> Talk
 deletePoint sectionIndex pointIndex talk =
     let
         section =
             getSection (Just sectionIndex) talk
 
-        newPoints =
-            section.points
-                |> Array.toIndexedList
-                |> List.filter (\pair -> (rejectTarget pointIndex pair))
-                |> List.map (\( _, point ) -> point)
-                |> Array.fromList
-
-        newSection =
-            { section | points = newPoints }
-
         newSections =
-            Array.set sectionIndex newSection talk.sections
+            Array.set sectionIndex
+                { section
+                    | points = deleteAtIndex pointIndex section.points
+                }
+                talk.sections
     in
         { talk | sections = newSections }
+
+
+deleteAtIndex : Int -> Array e -> Array e
+deleteAtIndex targetIndex array =
+    array
+        |> Array.toIndexedList
+        |> List.filter (\( index, _ ) -> index /= targetIndex)
+        |> List.map (\( _, entry ) -> entry)
+        |> Array.fromList

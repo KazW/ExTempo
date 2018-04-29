@@ -19,13 +19,26 @@ stringToInt string =
 secondsToDuration : Int -> String
 secondsToDuration time =
     let
-        minutes =
-            secondsToMinutes time
+        ( hours, minutes, seconds ) =
+            timeBreakdown time
 
-        seconds =
-            remainingSeconds time
+        times =
+            if hours > 0 then
+                [ (toString hours)
+                , "hours,"
+                , (toString minutes)
+                , "minutes,"
+                , (toString seconds)
+                , "seconds"
+                ]
+            else
+                [ (toString minutes)
+                , "minutes,"
+                , (toString seconds)
+                , "seconds"
+                ]
     in
-        (toString minutes) ++ " minutes, " ++ (toString seconds) ++ " seconds"
+        String.join " " times
 
 
 padTime : String -> String
@@ -36,16 +49,18 @@ padTime time =
 secondsToTime : Int -> String
 secondsToTime time =
     let
-        hours =
-            secondsToHours time
+        ( hours, minutes, seconds ) =
+            timeBreakdown time
 
-        minutes =
-            remainingMinutes time
-
-        seconds =
-            remainingSeconds time
+        times =
+            if hours > 0 then
+                [ padTime (toString hours)
+                , padTime (toString minutes)
+                , padTime (toString seconds)
+                ]
+            else
+                [ padTime (toString minutes)
+                , padTime (toString seconds)
+                ]
     in
-        if hours > 0 then
-            padTime (toString hours) ++ ":" ++ padTime (toString minutes) ++ ":" ++ padTime (toString seconds)
-        else
-            padTime (toString minutes) ++ ":" ++ padTime (toString seconds)
+        String.join ":" times

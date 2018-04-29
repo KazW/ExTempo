@@ -83,6 +83,35 @@ getPoint sectionIndex maybeIndex talk =
 --MODELS
 
 
+type Msg
+    = Tick Time
+    | EditEntry EntryType
+    | DeleteEntry EntryType
+    | ValidateEntry
+    | ClearEntry
+    | StartTalking
+    | StopTalking
+    | UserInput NewInput
+
+
+type Action
+    = Editing
+    | Reviewing
+    | Talking
+
+
+type EntryType
+    = TalkType
+    | SectionType (Maybe Int)
+    | PointType Int (Maybe Int)
+
+
+type NewInput
+    = Title String
+    | Minutes String
+    | Seconds String
+
+
 type alias Flags =
     { apiUrl : String }
 
@@ -133,33 +162,3 @@ type alias NewEntry =
     , seconds : Int
     , entryType : EntryType
     }
-
-
-type Action
-    = Editing
-    | Reviewing
-    | Speaking
-
-
-type EntryType
-    = TalkType
-    | SectionType (Maybe Int)
-    | PointType Int (Maybe Int)
-
-
-type NewInput
-    = Title String
-    | Minutes String
-    | Seconds String
-
-
-type Msg
-    = NoOp
-    | Tick Time
-    | EditEntry EntryType
-    | DeleteEntry EntryType
-    | ValidateEntry
-    | ClearEntry
-    | StartTalk
-    | StopTalk
-    | UserInput NewInput

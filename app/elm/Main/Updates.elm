@@ -12,9 +12,6 @@ import Main.Updates.Frames exposing (createFrames)
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        NoOp ->
-            model ! []
-
         Tick _ ->
             handleTick model
 
@@ -38,8 +35,8 @@ update msg model =
         ValidateEntry ->
             validateEntry model
 
-        StartTalk ->
-            { model | action = Speaking, talkFrames = createFrames model.talk } ! []
+        StartTalking ->
+            { model | action = Talking, talkFrames = createFrames model.talk } ! []
 
-        StopTalk ->
+        StopTalking ->
             { model | action = Reviewing, talkTime = 0, talkFrames = [] } ! []

@@ -14,7 +14,7 @@ saveEntry model =
         newTalk =
             case model.newEntry.entryType of
                 TalkType ->
-                    { talk | title = model.newEntry.title, duration = (entryDuration model.newEntry) }
+                    { talk | title = model.newEntry.title, duration = entryDuration model.newEntry }
 
                 SectionType sectionIndex ->
                     saveSection model.newEntry talk sectionIndex
@@ -27,7 +27,7 @@ saveEntry model =
 
 entryDuration : NewEntry -> Int
 entryDuration entry =
-    (minutesToSeconds entry.minutes) + entry.seconds
+    minutesToSeconds entry.minutes + entry.seconds
 
 
 saveSection : NewEntry -> Talk -> Maybe Int -> Talk

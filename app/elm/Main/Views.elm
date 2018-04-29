@@ -20,7 +20,7 @@ view model =
 
 content : Model -> Html Msg
 content model =
-    if model.action == Speaking then
+    if model.action == Talking then
         speakingView model
     else
         reviewingView model

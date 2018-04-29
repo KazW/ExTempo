@@ -168,7 +168,8 @@ sectionsDuration : Array Section -> Int
 sectionsDuration sections =
     sections
         |> Array.map sectionDuration
-        |> Array.foldl (+) 0
+        |> Array.toList
+        |> List.sum
 
 
 sectionDuration : Section -> Int
@@ -185,7 +186,8 @@ pointsDuration : Array Point -> Int
 pointsDuration points =
     points
         |> Array.map (\point -> point.duration)
-        |> Array.foldl (+) 0
+        |> Array.toList
+        |> List.sum
 
 
 filteredPointsDuration : Int -> Array Point -> Int

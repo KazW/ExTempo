@@ -1,39 +1,43 @@
 module Main.Updates.EditEntry exposing (editEntry)
 
 import Main.Models as Models exposing (..)
-import Main.Time exposing (..)
-import Main.Ports exposing (..)
+import Main.Time exposing (secondsToMinutes, remainingSeconds)
+import Main.Ports exposing (openModal, updateTextFields)
 
 
 editEntry : Model -> EntryType -> ( Model, Cmd Msg )
 editEntry model entryType =
+    ( { model
+        | action = Editing
+        , newEntry = fillEntry model entryType
+      }
+    , Cmd.batch
+        [ openModal "editing-modal"
+        , updateTextFields ""
+        ]
+    )
+
+
+fillEntry : Model -> EntryType -> NewEntry
+fillEntry model entryType =
     let
-        talk =
-            model.talk
-
-        entry =
-            { blankEntry | entryType = entryType }
-
-        newEntry =
+        record =
             case entryType of
                 TalkType ->
-                    fillEntry (talkToPoint talk) entry
+                    talkToPoint model.talk
 
                 SectionType maybeIndex ->
-                    fillEntry (sectionToPoint (getSection maybeIndex talk)) entry
+                    sectionToPoint (getSection maybeIndex model.talk)
 
                 PointType sectionIndex maybeIndex ->
-                    fillEntry (getPoint sectionIndex maybeIndex talk) entry
+                    getPoint sectionIndex maybeIndex model.talk
     in
-        ( { model
-            | action = Editing
-            , newEntry = newEntry
-          }
-        , Cmd.batch
-            [ openModal "editing-modal"
-            , updateTextFields ""
-            ]
-        )
+        { blankEntry
+            | title = record.title
+            , minutes = (secondsToMinutes record.duration)
+            , seconds = (remainingSeconds record.duration)
+            , entryType = entryType
+        }
 
 
 talkToPoint : Talk -> Point
@@ -47,13 +51,4 @@ sectionToPoint : Section -> Point
 sectionToPoint section =
     { title = section.title
     , duration = section.duration
-    }
-
-
-fillEntry : Point -> NewEntry -> NewEntry
-fillEntry record entry =
-    { entry
-        | title = record.title
-        , minutes = (secondsToMinutes record.duration)
-        , seconds = (remainingSeconds record.duration)
     }

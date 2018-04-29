@@ -7,7 +7,7 @@ import Array exposing (..)
 getCurrentFrame : Model -> Maybe Frame
 getCurrentFrame model =
     case model.action of
-        Speaking ->
+        Talking ->
             model.talkFrames
                 |> List.filter (\frame -> frame.start <= model.talkTime)
                 |> List.filter (\frame -> frame.end >= model.talkTime)
@@ -28,29 +28,30 @@ createFrames talk =
 talkPaddingFrame : Talk -> List Frame -> List Frame
 talkPaddingFrame talk frames =
     let
-        lastFrame =
+        currentFrame =
             getLastFrame frames
-
-        duration =
-            talk.duration - lastFrame.end
-
-        paddingSection =
-            paddingFrame.section
-
-        paddingPoint =
-            paddingFrame.point
     in
-        if lastFrame.end == talk.duration then
+        if currentFrame.end == talk.duration then
             frames
         else
-            List.append frames
-                [ { paddingFrame
-                    | section = { paddingSection | duration = duration }
-                    , point = { paddingPoint | duration = duration }
-                    , start = lastFrame.end
-                    , end = talk.duration
-                  }
-                ]
+            let
+                duration =
+                    talk.duration - currentFrame.end
+
+                paddingSection =
+                    paddingFrame.section
+
+                paddingPoint =
+                    paddingFrame.point
+            in
+                List.append frames
+                    [ { paddingFrame
+                        | section = { paddingSection | duration = duration }
+                        , point = { paddingPoint | duration = duration }
+                        , start = currentFrame.end
+                        , end = talk.duration
+                      }
+                    ]
 
 
 paddingFrame : Frame
@@ -86,16 +87,16 @@ sectionFrames talk pair =
 sectionPaddingFrame : Int -> List Frame -> List Frame
 sectionPaddingFrame sectionEnd frames =
     let
-        lastFrame =
+        currentFrame =
             getLastFrame frames
     in
-        if lastFrame.end == sectionEnd then
+        if currentFrame.end == sectionEnd then
             frames
         else
             List.append frames
-                [ { lastFrame
-                    | point = { title = paddingFrame.point.title, duration = sectionEnd - lastFrame.end }
-                    , start = lastFrame.end
+                [ { currentFrame
+                    | point = { title = paddingFrame.point.title, duration = sectionEnd - currentFrame.end }
+                    , start = currentFrame.end
                     , end = sectionEnd
                   }
                 ]
@@ -148,4 +149,4 @@ timeToEntry entryIndex entries =
         |> Array.toIndexedList
         |> List.filter (\( index, _ ) -> index < entryIndex)
         |> List.map (\( _, entry ) -> entry.duration)
-        |> List.foldl (+) 0
+        |> List.sum

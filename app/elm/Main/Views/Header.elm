@@ -8,7 +8,7 @@ import Html.Events exposing (..)
 
 headerText : Model -> String
 headerText model =
-    if model.action == Speaking then
+    if model.action == Talking then
         model.talk.title
     else
         "Plan a Talk"
@@ -18,16 +18,16 @@ headerButton : Model -> Html Msg
 headerButton model =
     let
         button_text =
-            if model.action == Speaking then
+            if model.action == Talking then
                 "stop talk"
             else
                 "start talk"
 
         button_action =
-            if model.action == Speaking then
-                StopTalk
+            if model.action == Talking then
+                StopTalking
             else
-                StartTalk
+                StartTalking
     in
         a
             [ href "#"

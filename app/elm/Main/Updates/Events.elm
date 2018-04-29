@@ -8,7 +8,7 @@ import Main.Updates.Frames exposing (getCurrentFrame)
 
 handleTick : Model -> ( Model, Cmd Msg )
 handleTick model =
-    if model.action == Speaking then
+    if model.action == Talking then
         let
             newModel =
                 { model | talkTime = model.talkTime + 1 }

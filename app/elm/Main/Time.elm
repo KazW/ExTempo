@@ -11,6 +11,14 @@ secondsInHour =
     3600
 
 
+timeBreakdown : Int -> ( Int, Int, Int )
+timeBreakdown time =
+    ( secondsToHours time
+    , remainingMinutes time
+    , remainingSeconds time
+    )
+
+
 remainingSeconds : Int -> Int
 remainingSeconds time =
     time % secondsInMinute
