@@ -1,27 +1,66 @@
-module Main.Updates.Editing exposing (..)
+module Main.Updates.Editing exposing (editEntry)
 
 import Main.Models as Models exposing (..)
 import Main.Time exposing (..)
 import Main.Ports exposing (..)
+import Array exposing (..)
 
 
 editEntry : Model -> EntryType -> ( Model, Cmd Msg )
 editEntry model entryType =
     let
-        oldEntry =
-            model.newEntry
+        entry =
+            { blankEntry | entryType = entryType }
 
         newEntry =
             case entryType of
                 TalkType ->
-                    { oldEntry
-                        | title = model.talk.title
-                        , minutes = (secondsToMinutes model.talk.duration)
-                        , seconds = (remainingSeconds model.talk.duration)
-                    }
+                    fillEntry (talkToPoint model.talk) entry
 
-                _ ->
-                    { oldEntry | entryType = entryType }
+                SectionType maybeIndex ->
+                    case maybeIndex of
+                        Nothing ->
+                            entry
+
+                        Just index ->
+                            let
+                                maybeSection =
+                                    Array.get index model.talk.sections
+                            in
+                                case maybeSection of
+                                    Nothing ->
+                                        entry
+
+                                    Just section ->
+                                        fillEntry (sectionToPoint section) entry
+
+                PointType sectionIndex maybeIndex ->
+                    let
+                        pointIndex =
+                            case maybeIndex of
+                                Nothing ->
+                                    0
+
+                                Just index ->
+                                    index
+
+                        section =
+                            case Array.get sectionIndex model.talk.sections of
+                                Nothing ->
+                                    blankSection
+
+                                Just section ->
+                                    section
+
+                        point =
+                            case Array.get pointIndex section.points of
+                                Nothing ->
+                                    blankPoint
+
+                                Just point ->
+                                    point
+                    in
+                        fillEntry point entry
     in
         ( { model
             | action = Editing
@@ -34,11 +73,24 @@ editEntry model entryType =
         )
 
 
-isValidEntry : Model -> Bool
-isValidEntry model =
-    True
+talkToPoint : Talk -> Point
+talkToPoint talk =
+    { title = talk.title
+    , duration = talk.duration
+    }
 
 
-addErrors : Model -> Model
-addErrors model =
-    model
+sectionToPoint : Section -> Point
+sectionToPoint section =
+    { title = section.title
+    , duration = section.duration
+    }
+
+
+fillEntry : Point -> NewEntry -> NewEntry
+fillEntry record entry =
+    { entry
+        | title = record.title
+        , minutes = (secondsToMinutes record.duration)
+        , seconds = (remainingSeconds record.duration)
+    }

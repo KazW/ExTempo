@@ -1,7 +1,7 @@
 module Main.Models exposing (..)
 
 import Time exposing (Time)
-import Dict exposing (..)
+import Array exposing (..)
 
 
 initModel : Flags -> Model
@@ -10,8 +10,8 @@ initModel flags_ =
     , talk =
         { title = ""
         , duration = 0
-        , sections = Dict.empty
-        , frames = []
+        , sections = Array.empty
+        , frames = Array.empty
         , time = 0
         }
     , action = Reviewing
@@ -32,7 +32,14 @@ blankSection : Section
 blankSection =
     { title = ""
     , duration = 0
-    , points = Dict.empty
+    , points = Array.empty
+    }
+
+
+blankPoint : Point
+blankPoint =
+    { title = ""
+    , duration = 0
     }
 
 
@@ -55,8 +62,8 @@ type alias Model =
 type alias Talk =
     { title : String
     , duration : Int
-    , sections : Dict Int Section
-    , frames : List Frame
+    , sections : Array Section
+    , frames : Array Frame
     , time : Int
     }
 
@@ -73,7 +80,7 @@ type alias Frame =
 type alias Section =
     { title : String
     , duration : Int
-    , points : Dict Int Point
+    , points : Array Point
     }
 
 

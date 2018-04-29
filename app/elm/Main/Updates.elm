@@ -4,7 +4,8 @@ import Main.Models as Models exposing (..)
 import Main.Ports exposing (closeModal)
 import Main.Updates.SaveInput exposing (saveEntry)
 import Main.Updates.Events exposing (handleTick, handleInput)
-import Main.Updates.Editing exposing (..)
+import Main.Updates.Editing exposing (editEntry)
+import Main.Updates.Validation exposing (isValidEntry, addErrors)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -47,6 +48,3 @@ update msg model =
                     { talk | time = 0 }
             in
                 { model | action = Reviewing, talk = newTalk } ! []
-
-
-

@@ -2,7 +2,7 @@ module Main.Updates.SaveInput exposing (saveEntry)
 
 import Main.Models as Models exposing (..)
 import Main.Time exposing (..)
-import Dict exposing (..)
+import Array exposing (..)
 
 
 saveEntry : Model -> Model
@@ -48,8 +48,8 @@ saveSection model sectionKey =
                 SectionType Nothing ->
                     blankSection
 
-                SectionType (Just key) ->
-                    case Dict.get key model.talk.sections of
+                SectionType (Just index) ->
+                    case Array.get index model.talk.sections of
                         Nothing ->
                             blankSection
 
@@ -68,20 +68,15 @@ saveSection model sectionKey =
         newSections =
             case sectionKey of
                 Nothing ->
-                    Dict.insert (nextSectionKey model) newSection talk.sections
+                    Array.push newSection talk.sections
 
                 Just sectionKey ->
-                    Dict.insert sectionKey newSection talk.sections
+                    Array.set sectionKey newSection talk.sections
 
         newTalk =
             { talk | sections = newSections }
     in
         { model | newEntry = blankEntry, talk = newTalk }
-
-
-nextSectionKey : Model -> Int
-nextSectionKey model =
-    Dict.size model.talk.sections
 
 
 savePoint : Model -> Int -> Maybe Int -> Model
@@ -91,7 +86,7 @@ savePoint model sectionKey pointKey =
             model.talk
 
         section =
-            case Dict.get sectionKey model.talk.sections of
+            case Array.get sectionKey model.talk.sections of
                 Nothing ->
                     blankSection
 
@@ -106,20 +101,15 @@ savePoint model sectionKey pointKey =
         newPoints =
             case pointKey of
                 Nothing ->
-                    Dict.insert (nextPointKey section) newPoint section.points
+                    Array.push newPoint section.points
 
                 Just pointKey ->
-                    Dict.insert pointKey newPoint section.points
+                    Array.set pointKey newPoint section.points
 
         newSections =
-            Dict.insert sectionKey { section | points = newPoints } model.talk.sections
+            Array.set sectionKey { section | points = newPoints } model.talk.sections
 
         newTalk =
             { talk | sections = newSections }
     in
         { model | newEntry = blankEntry, talk = newTalk }
-
-
-nextPointKey : Section -> Int
-nextPointKey section =
-    Dict.size section.points

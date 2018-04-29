@@ -12,8 +12,21 @@ modalHeaderText entryType =
         TalkType ->
             "Edit Talk"
 
-        _ ->
-            ""
+        SectionType index ->
+            case index of
+                Nothing ->
+                    "Add Section"
+
+                Just _ ->
+                    "Edit Section"
+
+        PointType _ index ->
+            case index of
+                Nothing ->
+                    "Add Point"
+
+                Just _ ->
+                    "Edit Point"
 
 
 editingView : Model -> Html Msg
