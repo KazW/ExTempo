@@ -2,11 +2,10 @@ module Main.Updates exposing (update)
 
 import Main.Models as Models exposing (..)
 import Main.Ports exposing (closeModal, updateTextFields)
-import Main.Updates.SaveInput exposing (saveEntry)
 import Main.Updates.Events exposing (handleTick, handleInput)
-import Main.Updates.Editing exposing (editEntry)
-import Main.Updates.Deleting exposing (deleteEntry)
-import Main.Updates.Validation exposing (isValidEntry, addErrors)
+import Main.Updates.EditEntry exposing (editEntry)
+import Main.Updates.DeleteEntry exposing (deleteEntry)
+import Main.Updates.ValidateEntry exposing (validateEntry)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -22,6 +21,7 @@ update msg model =
             { model
                 | newEntry = blankEntry
                 , action = Reviewing
+                , errorMessage = Nothing
             }
                 ! [ closeModal "editing-modal" ]
 
@@ -35,20 +35,10 @@ update msg model =
             handleInput model data
 
         ValidateEntry ->
-            if isValidEntry model then
-                (saveEntry model) ! [ closeModal "editing-modal", updateTextFields "" ]
-            else
-                (addErrors model) ! []
+            validateEntry model
 
         StartTalk ->
             { model | action = Speaking } ! []
 
         StopTalk ->
-            let
-                talk =
-                    model.talk
-
-                newTalk =
-                    { talk | time = 0 }
-            in
-                { model | action = Reviewing, talk = newTalk } ! []
+            { model | action = Reviewing, talkTime = 0 } ! []

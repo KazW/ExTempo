@@ -34,6 +34,7 @@ editingView model =
     div [ id "editing-modal", class "modal" ]
         [ div [ class "modal-content" ]
             [ h4 [] [ text (modalHeaderText model.newEntry.entryType) ]
+            , errorMessage model
             , div [ class "row" ]
                 [ div [ class "input-field col s6" ]
                     [ input
@@ -84,3 +85,13 @@ editingView model =
                 ]
             ]
         ]
+
+
+errorMessage : Model -> Html Msg
+errorMessage model =
+    case model.errorMessage of
+        Nothing ->
+            p [] []
+
+        Just error ->
+            p [ class "caption", style [ ( "color", "red" ) ] ] [ text error ]

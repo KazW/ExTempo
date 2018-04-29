@@ -47,20 +47,23 @@ talkView model =
 
 sectionsView : Model -> List (Html Msg)
 sectionsView model =
-    [ div [ class "row" ]
-        [ h4 [ class "header light" ]
-            [ text "Sections"
-            , buttonSpacer
-            , a
-                [ class "btn-floating waves-effect waves-light"
-                , onClick (EditEntry (SectionType Nothing))
+    if model.talk.duration > 0 then
+        [ div [ class "row" ]
+            [ h4 [ class "header light" ]
+                [ text "Sections"
+                , buttonSpacer
+                , a
+                    [ class "btn-floating waves-effect waves-light"
+                    , onClick (EditEntry (SectionType Nothing))
+                    ]
+                    [ i [ class "medium material-icons" ] [ text "add" ] ]
                 ]
-                [ i [ class "medium material-icons" ] [ text "add" ] ]
+            , p [ class "caption" ] [ text "Set the section topic and duration, both are required." ]
             ]
-        , p [ class "caption" ] [ text "Set the section topic and duration, both are required." ]
+        , eachSectionView model
         ]
-    , eachSectionView model
-    ]
+    else
+        [ div [ class "row" ] [] ]
 
 
 eachSectionView : Model -> Html Msg
@@ -73,7 +76,7 @@ eachSectionView model =
 
 renderSection : ( Int, Section ) -> Html Msg
 renderSection ( index, section ) =
-    div [ class "row" ]
+    div [ class "col s12" ]
         [ div [ class "col s12" ]
             [ h5 [ class "header light" ]
                 [ text section.title

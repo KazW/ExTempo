@@ -1,4 +1,4 @@
-module Main.Updates.SaveInput exposing (saveEntry)
+module Main.Updates.SaveEntry exposing (saveEntry, entryDuration)
 
 import Main.Models as Models exposing (..)
 import Main.Time exposing (..)

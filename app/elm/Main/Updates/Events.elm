@@ -7,17 +7,10 @@ import Main.Views.Helpers exposing (stringToInt)
 
 handleTick : Model -> ( Model, Cmd Msg )
 handleTick model =
-    let
-        talk =
-            model.talk
-
-        newTalk =
-            { talk | time = model.talk.time + 1 }
-    in
-        if model.action == Speaking then
-            { model | talk = newTalk } ! []
-        else
-            model ! [ updateTextFields "" ]
+    if model.action == Speaking then
+        { model | talkTime = model.talkTime + 1 } ! []
+    else
+        model ! [ updateTextFields "" ]
 
 
 handleInput : Model -> NewInput -> ( Model, Cmd Msg )

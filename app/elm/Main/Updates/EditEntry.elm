@@ -1,4 +1,4 @@
-module Main.Updates.Editing exposing (editEntry)
+module Main.Updates.EditEntry exposing (editEntry)
 
 import Main.Models as Models exposing (..)
 import Main.Time exposing (..)

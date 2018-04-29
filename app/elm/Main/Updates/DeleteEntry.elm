@@ -1,4 +1,4 @@
-module Main.Updates.Deleting exposing (deleteEntry)
+module Main.Updates.DeleteEntry exposing (deleteEntry)
 
 import Main.Models exposing (..)
 import Array exposing (..)
