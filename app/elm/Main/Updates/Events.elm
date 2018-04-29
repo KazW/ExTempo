@@ -3,12 +3,17 @@ module Main.Updates.Events exposing (handleTick, handleInput)
 import Main.Models as Models exposing (..)
 import Main.Ports exposing (..)
 import Main.Views.Helpers exposing (stringToInt)
+import Main.Updates.Frames exposing (getCurrentFrame)
 
 
 handleTick : Model -> ( Model, Cmd Msg )
 handleTick model =
     if model.action == Speaking then
-        { model | talkTime = model.talkTime + 1 } ! []
+        let
+            newModel =
+                { model | talkTime = model.talkTime + 1 }
+        in
+            { newModel | currentFrame = getCurrentFrame newModel } ! []
     else
         model ! [ updateTextFields "" ]
 

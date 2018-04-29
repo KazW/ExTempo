@@ -11,12 +11,13 @@ initModel flags_ =
         { title = ""
         , duration = 0
         , sections = Array.empty
-        , frames = Array.empty
         }
+    , talkFrames = []
     , talkTime = 0
     , action = Reviewing
     , newEntry = blankEntry
     , errorMessage = Nothing
+    , currentFrame = Nothing
     }
 
 
@@ -89,10 +90,12 @@ type alias Flags =
 type alias Model =
     { apiUrl : String
     , talk : Talk
+    , talkFrames : List Frame
     , talkTime : Int
     , action : Action
     , newEntry : NewEntry
     , errorMessage : Maybe String
+    , currentFrame : Maybe Frame
     }
 
 
@@ -100,14 +103,12 @@ type alias Talk =
     { title : String
     , duration : Int
     , sections : Array Section
-    , frames : Array Frame
     }
 
 
 type alias Frame =
-    { section : String
-    , point : String
-    , dutation : Int
+    { section : Section
+    , point : Point
     , start : Int
     , end : Int
     }

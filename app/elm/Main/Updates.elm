@@ -6,6 +6,7 @@ import Main.Updates.Events exposing (handleTick, handleInput)
 import Main.Updates.EditEntry exposing (editEntry)
 import Main.Updates.DeleteEntry exposing (deleteEntry)
 import Main.Updates.ValidateEntry exposing (validateEntry)
+import Main.Updates.Frames exposing (createFrames)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -38,7 +39,7 @@ update msg model =
             validateEntry model
 
         StartTalk ->
-            { model | action = Speaking } ! []
+            { model | action = Speaking, talkFrames = createFrames model.talk } ! []
 
         StopTalk ->
-            { model | action = Reviewing, talkTime = 0 } ! []
+            { model | action = Reviewing, talkTime = 0, talkFrames = [] } ! []

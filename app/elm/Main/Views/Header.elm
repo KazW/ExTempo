@@ -45,17 +45,25 @@ headerView model =
             [ class ""
             , attribute "role" "navigation"
             ]
-            [ div [ class "nav-wrapper" ]
-                [ span
-                    [ class "brand-logo center"
-                    ]
-                    [ text (headerText model)
-                    ]
-                , ul [ class "right" ]
-                    [ li []
-                        [ headerButton model
-                        ]
+            (headerNav model)
+        ]
+
+
+headerNav : Model -> List (Html Msg)
+headerNav model =
+    if model.talk.duration > 0 then
+        [ div [ class "nav-wrapper" ]
+            [ span
+                [ class "brand-logo center"
+                ]
+                [ text (headerText model)
+                ]
+            , ul [ class "right" ]
+                [ li []
+                    [ headerButton model
                     ]
                 ]
             ]
         ]
+    else
+        []

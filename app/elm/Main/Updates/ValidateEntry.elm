@@ -10,17 +10,17 @@ import Main.Views.Helpers exposing (secondsToDuration)
 validateEntry : Model -> ( Model, Cmd Msg )
 validateEntry model =
     let
-        modelErrors =
-            addErrors model
+        newModel =
+            updateErrors model
     in
-        if isValidEntry modelErrors then
-            saveEntry modelErrors ! [ closeModal "editing-modal", updateTextFields "" ]
+        if isValid newModel then
+            saveEntry newModel ! [ closeModal "editing-modal", updateTextFields "" ]
         else
-            modelErrors ! []
+            newModel ! []
 
 
-isValidEntry : Model -> Bool
-isValidEntry model =
+isValid : Model -> Bool
+isValid model =
     case model.errorMessage of
         Nothing ->
             True
@@ -29,8 +29,8 @@ isValidEntry model =
             False
 
 
-addErrors : Model -> Model
-addErrors model =
+updateErrors : Model -> Model
+updateErrors model =
     let
         maybeError =
             entryError model
