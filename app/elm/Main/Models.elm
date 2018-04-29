@@ -43,6 +43,40 @@ blankPoint =
     }
 
 
+getSection : Maybe Int -> Talk -> Section
+getSection maybeIndex talk =
+    case maybeIndex of
+        Nothing ->
+            blankSection
+
+        Just sectionIndex ->
+            case Array.get sectionIndex talk.sections of
+                Nothing ->
+                    blankSection
+
+                Just section ->
+                    section
+
+
+getPoint : Int -> Maybe Int -> Talk -> Point
+getPoint sectionIndex maybeIndex talk =
+    let
+        section =
+            getSection (Just sectionIndex) talk
+    in
+        case maybeIndex of
+            Nothing ->
+                blankPoint
+
+            Just pointIndex ->
+                case Array.get pointIndex section.points of
+                    Nothing ->
+                        blankPoint
+
+                    Just point ->
+                        point
+
+
 
 --MODELS
 
@@ -120,6 +154,7 @@ type Msg
     = NoOp
     | Tick Time
     | EditEntry EntryType
+    | DeleteEntry EntryType
     | ValidateEntry
     | ClearEntry
     | StartTalk

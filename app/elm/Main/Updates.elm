@@ -1,10 +1,11 @@
 module Main.Updates exposing (update)
 
 import Main.Models as Models exposing (..)
-import Main.Ports exposing (closeModal)
+import Main.Ports exposing (closeModal, updateTextFields)
 import Main.Updates.SaveInput exposing (saveEntry)
 import Main.Updates.Events exposing (handleTick, handleInput)
 import Main.Updates.Editing exposing (editEntry)
+import Main.Updates.Deleting exposing (deleteEntry)
 import Main.Updates.Validation exposing (isValidEntry, addErrors)
 
 
@@ -27,12 +28,15 @@ update msg model =
         EditEntry entryType ->
             editEntry model entryType
 
+        DeleteEntry entryType ->
+            deleteEntry model entryType
+
         UserInput data ->
             handleInput model data
 
         ValidateEntry ->
             if isValidEntry model then
-                (saveEntry model) ! [ closeModal "editing-modal" ]
+                (saveEntry model) ! [ closeModal "editing-modal", updateTextFields "" ]
             else
                 (addErrors model) ! []
 

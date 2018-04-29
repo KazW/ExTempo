@@ -3,64 +3,27 @@ module Main.Updates.Editing exposing (editEntry)
 import Main.Models as Models exposing (..)
 import Main.Time exposing (..)
 import Main.Ports exposing (..)
-import Array exposing (..)
 
 
 editEntry : Model -> EntryType -> ( Model, Cmd Msg )
 editEntry model entryType =
     let
+        talk =
+            model.talk
+
         entry =
             { blankEntry | entryType = entryType }
 
         newEntry =
             case entryType of
                 TalkType ->
-                    fillEntry (talkToPoint model.talk) entry
+                    fillEntry (talkToPoint talk) entry
 
                 SectionType maybeIndex ->
-                    case maybeIndex of
-                        Nothing ->
-                            entry
-
-                        Just index ->
-                            let
-                                maybeSection =
-                                    Array.get index model.talk.sections
-                            in
-                                case maybeSection of
-                                    Nothing ->
-                                        entry
-
-                                    Just section ->
-                                        fillEntry (sectionToPoint section) entry
+                    fillEntry (sectionToPoint (getSection maybeIndex talk)) entry
 
                 PointType sectionIndex maybeIndex ->
-                    let
-                        pointIndex =
-                            case maybeIndex of
-                                Nothing ->
-                                    0
-
-                                Just index ->
-                                    index
-
-                        section =
-                            case Array.get sectionIndex model.talk.sections of
-                                Nothing ->
-                                    blankSection
-
-                                Just section ->
-                                    section
-
-                        point =
-                            case Array.get pointIndex section.points of
-                                Nothing ->
-                                    blankPoint
-
-                                Just point ->
-                                    point
-                    in
-                        fillEntry point entry
+                    fillEntry (getPoint sectionIndex maybeIndex talk) entry
     in
         ( { model
             | action = Editing

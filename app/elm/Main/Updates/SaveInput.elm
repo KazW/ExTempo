@@ -11,105 +11,68 @@ saveEntry model =
         talk =
             model.talk
 
-        newModel =
+        newTalk =
             case model.newEntry.entryType of
                 TalkType ->
-                    let
-                        newTalk =
-                            { talk | title = model.newEntry.title, duration = (entryDuration model) }
-                    in
-                        { model | talk = newTalk, newEntry = blankEntry }
+                    { talk | title = model.newEntry.title, duration = (entryDuration model.newEntry) }
 
-                SectionType sectionKey ->
-                    saveSection model sectionKey
+                SectionType sectionIndex ->
+                    saveSection model.newEntry talk sectionIndex
 
-                PointType sectionKey pointKey ->
-                    savePoint model sectionKey pointKey
+                PointType sectionIndex pointIndex ->
+                    savePoint model.newEntry talk sectionIndex pointIndex
     in
-        newModel
+        { model | talk = newTalk, newEntry = blankEntry }
 
 
-entryDuration : Model -> Int
-entryDuration model =
-    (minutesToSeconds model.newEntry.minutes) + model.newEntry.seconds
+entryDuration : NewEntry -> Int
+entryDuration entry =
+    (minutesToSeconds entry.minutes) + entry.seconds
 
 
-saveSection : Model -> Maybe Int -> Model
-saveSection model sectionKey =
+saveSection : NewEntry -> Talk -> Maybe Int -> Talk
+saveSection newEntry talk sectionIndex =
     let
-        talk =
-            model.talk
-
-        newEntry =
-            model.newEntry
-
         oldSection =
-            case newEntry.entryType of
-                SectionType Nothing ->
-                    blankSection
-
-                SectionType (Just index) ->
-                    case Array.get index model.talk.sections of
-                        Nothing ->
-                            blankSection
-
-                        Just section ->
-                            section
-
-                _ ->
-                    blankSection
+            getSection sectionIndex talk
 
         newSection =
             { oldSection
                 | title = newEntry.title
-                , duration = entryDuration model
+                , duration = entryDuration newEntry
             }
 
         newSections =
-            case sectionKey of
+            case sectionIndex of
                 Nothing ->
                     Array.push newSection talk.sections
 
-                Just sectionKey ->
-                    Array.set sectionKey newSection talk.sections
-
-        newTalk =
-            { talk | sections = newSections }
+                Just sectionIndex ->
+                    Array.set sectionIndex newSection talk.sections
     in
-        { model | newEntry = blankEntry, talk = newTalk }
+        { talk | sections = newSections }
 
 
-savePoint : Model -> Int -> Maybe Int -> Model
-savePoint model sectionKey pointKey =
+savePoint : NewEntry -> Talk -> Int -> Maybe Int -> Talk
+savePoint newEntry talk sectionIndex pointIndex =
     let
-        talk =
-            model.talk
-
         section =
-            case Array.get sectionKey model.talk.sections of
-                Nothing ->
-                    blankSection
-
-                Just section ->
-                    section
+            getSection (Just sectionIndex) talk
 
         newPoint =
-            { title = model.newEntry.title
-            , duration = entryDuration model
+            { title = newEntry.title
+            , duration = entryDuration newEntry
             }
 
         newPoints =
-            case pointKey of
+            case pointIndex of
                 Nothing ->
                     Array.push newPoint section.points
 
-                Just pointKey ->
-                    Array.set pointKey newPoint section.points
+                Just pointIndex ->
+                    Array.set pointIndex newPoint section.points
 
         newSections =
-            Array.set sectionKey { section | points = newPoints } model.talk.sections
-
-        newTalk =
-            { talk | sections = newSections }
+            Array.set sectionIndex { section | points = newPoints } talk.sections
     in
-        { model | newEntry = blankEntry, talk = newTalk }
+        { talk | sections = newSections }

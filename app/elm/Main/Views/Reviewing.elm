@@ -80,6 +80,12 @@ renderSection ( index, section ) =
                 , buttonSpacer
                 , a
                     [ class "btn-floating waves-effect waves-light"
+                    , onClick (DeleteEntry (SectionType (Just index)))
+                    ]
+                    [ i [ class "medium material-icons" ] [ text "delete" ] ]
+                , buttonSpacer
+                , a
+                    [ class "btn-floating waves-effect waves-light"
                     , onClick (EditEntry (SectionType (Just index)))
                     ]
                     [ i [ class "medium material-icons" ] [ text "edit" ] ]
@@ -120,6 +126,11 @@ renderPoint ( pointIndex, point ) sectionIndex section =
         , text " - "
         , text (secondsToDuration point.duration)
         , buttonSpacer
+        , a
+            [ class "waves-effect waves-light"
+            , onClick (DeleteEntry (PointType sectionIndex (Just pointIndex)))
+            ]
+            [ i [ class "tiny material-icons" ] [ text "delete" ] ]
         , a
             [ class "waves-effect waves-light"
             , onClick (EditEntry (PointType sectionIndex (Just pointIndex)))
