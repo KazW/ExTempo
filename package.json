@@ -23,7 +23,7 @@
     "html-webpack-plugin": "^2.28.0",
     "jshint": "^2.9.4",
     "jshint-loader": "^0.8.4",
-    "materialize-css": "^0.98.0",
+    "materialize-css": "^0.100.2",
     "node-sass": "^4.5.0",
     "pug-static-loader": "^1.0.1",
     "sass-loader": "^6.0.2",

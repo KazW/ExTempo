@@ -1,12 +1,37 @@
-$roboto-font-path: "~materialize-css/fonts/roboto/";
+$roboto-font-path: "~materialize-css/dist/fonts/roboto/";
 
-@import "_materialize";
+@import "materialize-css/sass/materialize";
 
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
 
-h3.trimmed {
-  margin: 0;
+.sidenav {
+  width: 300px;
+}
+
+.sidenav li>div {
+    color: rgba(0,0,0,0.87);
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 32px;
+}
+
+ul.sidenav.sidenav-fixed li.active {
+    background-color: rgba(50,50,50,0.06);
+}
+
+ul.sidenav.sidenav-fixed li div {
+    font-size: 13px;
+    line-height: 44px;
+    height: 44px;
+    padding: 0 30px;
+}
+
+ul.sidenav.sidenav-fixed li {
+    line-height: 44px;
 }

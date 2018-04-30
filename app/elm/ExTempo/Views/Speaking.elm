@@ -8,4 +8,11 @@ import Html.Attributes exposing (..)
 
 speakingView : Model -> Html Msg
 speakingView model =
-    div [ class "center" ] [ text (secondsToTime model.talkTime) ]
+    div []
+        [ ul [ class "sidenav sidenav-fixed" ]
+            [ li [ class "bold active" ]
+                [ div [] [ text "Hello" ]
+                ]
+            ]
+        , div [ class "center" ] [ text (secondsToTime model.talkTime) ]
+        ]

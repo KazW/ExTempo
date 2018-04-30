@@ -13,7 +13,6 @@ class Ports {
   // Initialization port, only called once when the Elm App initializes.
   initPort() {
     $('.modal').modal({dismissible: false});
-    window.ExTempoPorts.updateTextFields();
   }
 
   // Used when dynamically updating Materialize text fields.
@@ -22,11 +21,14 @@ class Ports {
   }
 
   openModal(input) {
+    window.ExTempoPorts.updateTextFields();
     $('#' + input).modal('open');
   }
 
   closeModal(input) {
     $('#' + input).modal('close');
+    window.ExTempoPorts.updateTextFields();
+
   }
 }
 

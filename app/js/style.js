@@ -1,7 +1,7 @@
 'use strict';
 
 // Load Materialize JS
-require('materialize-css/js/jquery.easing.1.3');
+require('materialize-css/js/jquery.easing.1.4');
 require('materialize-css/js/velocity.min');
 require('materialize-css/js/hammer.min');
 require('materialize-css/js/jquery.hammer');
