@@ -1,4 +1,4 @@
-module Main.Models exposing (..)
+module ExTempo.Models exposing (..)
 
 import Time exposing (Time)
 import Array exposing (..)

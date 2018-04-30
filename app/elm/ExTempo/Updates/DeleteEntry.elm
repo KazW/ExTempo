@@ -1,6 +1,6 @@
-module Main.Updates.DeleteEntry exposing (deleteEntry)
+module ExTempo.Updates.DeleteEntry exposing (deleteEntry)
 
-import Main.Models exposing (..)
+import ExTempo.Models exposing (..)
 import Array exposing (..)
 
 

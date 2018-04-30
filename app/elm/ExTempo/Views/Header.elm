@@ -1,6 +1,6 @@
-module Main.Views.Header exposing (headerView)
+module ExTempo.Views.Header exposing (headerView)
 
-import Main.Models exposing (..)
+import ExTempo.Models exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)

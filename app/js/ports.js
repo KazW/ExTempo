@@ -2,7 +2,7 @@
 
 class Ports {
   constructor() {
-    const ports = window.Main.ports;
+    const ports = window.ExTempo.ports;
 
     ports.initPort.subscribe(this.initPort);
     ports.updateTextFields.subscribe(this.updateTextFields);
@@ -13,7 +13,7 @@ class Ports {
   // Initialization port, only called once when the Elm App initializes.
   initPort() {
     $('.modal').modal({dismissible: false});
-    window.MainPorts.updateTextFields();
+    window.ExTempoPorts.updateTextFields();
   }
 
   // Used when dynamically updating Materialize text fields.

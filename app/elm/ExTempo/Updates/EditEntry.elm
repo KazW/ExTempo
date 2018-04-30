@@ -1,8 +1,8 @@
-module Main.Updates.EditEntry exposing (editEntry)
+module ExTempo.Updates.EditEntry exposing (editEntry)
 
-import Main.Models as Models exposing (..)
-import Main.Time exposing (secondsToMinutes, remainingSeconds)
-import Main.Ports exposing (openModal, updateTextFields)
+import ExTempo.Models as Models exposing (..)
+import ExTempo.Time exposing (secondsToMinutes, remainingSeconds)
+import ExTempo.Ports exposing (openModal, updateTextFields)
 
 
 editEntry : Model -> EntryType -> ( Model, Cmd Msg )

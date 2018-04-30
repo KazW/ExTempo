@@ -1,6 +1,6 @@
-module Main.Views.Helpers exposing (..)
+module ExTempo.Views.Helpers exposing (..)
 
-import Main.Time exposing (..)
+import ExTempo.Time exposing (..)
 
 
 stringToInt : String -> Int

@@ -1,10 +1,10 @@
-module Main.Updates.ValidateEntry exposing (validateEntry)
+module ExTempo.Updates.ValidateEntry exposing (validateEntry)
 
-import Main.Models exposing (..)
+import ExTempo.Models exposing (..)
 import Array exposing (..)
-import Main.Ports exposing (closeModal, updateTextFields)
-import Main.Updates.SaveEntry exposing (..)
-import Main.Views.Helpers exposing (secondsToDuration)
+import ExTempo.Ports exposing (closeModal, updateTextFields)
+import ExTempo.Updates.SaveEntry exposing (..)
+import ExTempo.Views.Helpers exposing (secondsToDuration)
 
 
 validateEntry : Model -> ( Model, Cmd Msg )

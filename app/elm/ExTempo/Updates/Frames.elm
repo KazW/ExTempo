@@ -1,6 +1,6 @@
-module Main.Updates.Frames exposing (getCurrentFrame, createFrames)
+module ExTempo.Updates.Frames exposing (getCurrentFrame, createFrames)
 
-import Main.Models exposing (..)
+import ExTempo.Models exposing (..)
 import Array exposing (..)
 
 

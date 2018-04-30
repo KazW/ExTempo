@@ -1,6 +1,6 @@
-module Main.Views.Landing exposing (landingView)
+module ExTempo.Views.Landing exposing (landingView)
 
-import Main.Models exposing (..)
+import ExTempo.Models exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 

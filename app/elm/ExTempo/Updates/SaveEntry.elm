@@ -1,7 +1,7 @@
-module Main.Updates.SaveEntry exposing (saveEntry, entryDuration)
+module ExTempo.Updates.SaveEntry exposing (saveEntry, entryDuration)
 
-import Main.Models as Models exposing (..)
-import Main.Time exposing (..)
+import ExTempo.Models as Models exposing (..)
+import ExTempo.Time exposing (..)
 import Array exposing (..)
 
 

@@ -1,9 +1,9 @@
-module Main.Updates.Events exposing (handleTick, handleInput)
+module ExTempo.Updates.Events exposing (handleTick, handleInput)
 
-import Main.Models as Models exposing (..)
-import Main.Ports exposing (..)
-import Main.Views.Helpers exposing (stringToInt)
-import Main.Updates.Frames exposing (getCurrentFrame)
+import ExTempo.Models as Models exposing (..)
+import ExTempo.Ports exposing (..)
+import ExTempo.Views.Helpers exposing (stringToInt)
+import ExTempo.Updates.Frames exposing (getCurrentFrame)
 
 
 handleTick : Model -> ( Model, Cmd Msg )

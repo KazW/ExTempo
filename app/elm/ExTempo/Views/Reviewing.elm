@@ -1,8 +1,8 @@
-module Main.Views.Reviewing exposing (reviewingView)
+module ExTempo.Views.Reviewing exposing (reviewingView)
 
-import Main.Models exposing (..)
-import Main.Views.Helpers exposing (..)
-import Main.Views.Landing exposing (landingView)
+import ExTempo.Models exposing (..)
+import ExTempo.Views.Helpers exposing (..)
+import ExTempo.Views.Landing exposing (landingView)
 import Array exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -24,7 +24,7 @@ talkView model =
     if model.talk.duration > 0 then
         [ div [ class "row" ]
             [ h4 [ class "header light" ]
-                [ text "Talk Options"
+                [ text "Talk"
                 , buttonSpacer
                 , a
                     [ class "btn-floating waves-effect waves-light"
@@ -43,7 +43,7 @@ talkInfo : Model -> Html Msg
 talkInfo model =
     div [ class "row" ]
         [ div [ class "row" ]
-            [ div [ class "col s12 m4 right-align" ] [ h5 [ class "header light" ] [ text "Main Topic:" ] ]
+            [ div [ class "col s12 m4 right-align" ] [ h5 [ class "header light" ] [ text "ExTempo Topic:" ] ]
             , div [ class "col s12 m8" ] [ p [] [ text model.talk.title ] ]
             ]
         , div [ class "row" ]

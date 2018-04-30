@@ -1,9 +1,9 @@
-module Main exposing (main)
+module ExTempo exposing (main)
 
-import Main.Models as Models exposing (..)
-import Main.Ports as Ports exposing (..)
-import Main.Views as Views exposing (view)
-import Main.Updates as Updates exposing (update)
+import ExTempo.Models as Models exposing (..)
+import ExTempo.Ports as Ports exposing (..)
+import ExTempo.Views as Views exposing (view)
+import ExTempo.Updates as Updates exposing (update)
 import Html exposing (Html, programWithFlags)
 import Time exposing (Time, every, second)
 

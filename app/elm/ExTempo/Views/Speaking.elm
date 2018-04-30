@@ -1,7 +1,7 @@
-module Main.Views.Speaking exposing (speakingView)
+module ExTempo.Views.Speaking exposing (speakingView)
 
-import Main.Models exposing (..)
-import Main.Views.Helpers exposing (..)
+import ExTempo.Models exposing (..)
+import ExTempo.Views.Helpers exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 

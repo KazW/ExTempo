@@ -1,10 +1,10 @@
-module Main.Views exposing (view)
+module ExTempo.Views exposing (view)
 
-import Main.Models as Models exposing (..)
-import Main.Views.Header exposing (headerView)
-import Main.Views.Editing exposing (editingView)
-import Main.Views.Reviewing exposing (reviewingView)
-import Main.Views.Speaking exposing (speakingView)
+import ExTempo.Models as Models exposing (..)
+import ExTempo.Views.Header exposing (headerView)
+import ExTempo.Views.Editing exposing (editingView)
+import ExTempo.Views.Reviewing exposing (reviewingView)
+import ExTempo.Views.Speaking exposing (speakingView)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 

@@ -1,4 +1,4 @@
-module Main.Time exposing (..)
+module ExTempo.Time exposing (..)
 
 
 secondsInMinute : Int

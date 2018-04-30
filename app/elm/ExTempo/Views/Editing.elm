@@ -1,6 +1,6 @@
-module Main.Views.Editing exposing (editingView)
+module ExTempo.Views.Editing exposing (editingView)
 
-import Main.Models as Models exposing (..)
+import ExTempo.Models as Models exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)

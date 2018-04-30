@@ -1,12 +1,12 @@
-module Main.Updates exposing (update)
+module ExTempo.Updates exposing (update)
 
-import Main.Models as Models exposing (..)
-import Main.Ports exposing (closeModal, updateTextFields)
-import Main.Updates.Events exposing (handleTick, handleInput)
-import Main.Updates.EditEntry exposing (editEntry)
-import Main.Updates.DeleteEntry exposing (deleteEntry)
-import Main.Updates.ValidateEntry exposing (validateEntry)
-import Main.Updates.Frames exposing (createFrames)
+import ExTempo.Models as Models exposing (..)
+import ExTempo.Ports exposing (closeModal, updateTextFields)
+import ExTempo.Updates.Events exposing (handleTick, handleInput)
+import ExTempo.Updates.EditEntry exposing (editEntry)
+import ExTempo.Updates.DeleteEntry exposing (deleteEntry)
+import ExTempo.Updates.ValidateEntry exposing (validateEntry)
+import ExTempo.Updates.Frames exposing (createFrames)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
