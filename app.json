@@ -8,7 +8,7 @@
       "url": "heroku/nodejs"
     },
     {
-      "url": "https://github.com/KazW/nginx-buildpack"
+      "url": "https://github.com/heroku/heroku-buildpack-static"
     }
   ]
 }
