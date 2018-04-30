@@ -10,5 +10,11 @@
     {
       "url": "https://github.com/heroku/heroku-buildpack-static"
     }
-  ]
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "Hobby"
+    }
+  }
 }
