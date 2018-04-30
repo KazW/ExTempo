@@ -6,8 +6,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --hot --inline",
-    "compile": "webpack -p",
-    "heroku-postbuild": "npm run compile"
+    "compile": "webpack -p"
   },
   "dependencies": {
     "autoprefixer": "^6.7.5",
