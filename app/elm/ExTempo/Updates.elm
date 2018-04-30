@@ -36,7 +36,22 @@ update msg model =
             validateEntry model
 
         StartTalking ->
-            { model | action = Talking, talkFrames = createFrames model.talk } ! []
+            let
+                frames =
+                    createFrames model.talk
+            in
+                { model
+                    | action = Talking
+                    , talkFrames = frames
+                    , currentFrame = frames |> List.head
+                }
+                    ! []
 
         StopTalking ->
-            { model | action = Reviewing, talkTime = 0, talkFrames = [] } ! []
+            { model
+                | action = Reviewing
+                , talkTime = 0
+                , talkFrames = []
+                , currentFrame = Nothing
+            }
+                ! []

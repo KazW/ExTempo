@@ -136,8 +136,8 @@ type alias Talk =
 
 
 type alias Frame =
-    { section : Section
-    , point : Point
+    { section : Maybe Int
+    , point : Maybe Int
     , start : Int
     , end : Int
     }

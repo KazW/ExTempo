@@ -34,30 +34,20 @@ talkPaddingFrame talk frames =
         if currentFrame.end == talk.duration then
             frames
         else
-            let
-                duration =
-                    talk.duration - currentFrame.end
-
-                paddingSection =
-                    paddingFrame.section
-
-                paddingPoint =
-                    paddingFrame.point
-            in
-                List.append frames
-                    [ { paddingFrame
-                        | section = { paddingSection | duration = duration }
-                        , point = { paddingPoint | duration = duration }
-                        , start = currentFrame.end
-                        , end = talk.duration
-                      }
-                    ]
+            List.append frames
+                [ { paddingFrame
+                    | section = Nothing
+                    , point = Nothing
+                    , start = currentFrame.end
+                    , end = talk.duration
+                  }
+                ]
 
 
 paddingFrame : Frame
 paddingFrame =
-    { section = { blankSection | title = "Extra Time" }
-    , point = { blankPoint | title = "Extra Time" }
+    { section = Nothing
+    , point = Nothing
     , start = 0
     , end = 0
     }
@@ -74,13 +64,13 @@ sectionFrames talk pair =
     in
         if length section.points == 0 then
             [ { paddingFrame
-                | section = section
+                | section = Just index
                 , start = start
                 , end = end
               }
             ]
         else
-            pointFrames start section
+            pointFrames start pair
                 |> sectionPaddingFrame end
 
 
@@ -95,22 +85,22 @@ sectionPaddingFrame sectionEnd frames =
         else
             List.append frames
                 [ { currentFrame
-                    | point = { title = paddingFrame.point.title, duration = sectionEnd - currentFrame.end }
+                    | point = Nothing
                     , start = currentFrame.end
                     , end = sectionEnd
                   }
                 ]
 
 
-pointFrames : Int -> Section -> List Frame
-pointFrames sectionStart section =
+pointFrames : Int -> ( Int, Section ) -> List Frame
+pointFrames sectionStart ( sectionIndex, section ) =
     section.points
         |> Array.toIndexedList
-        |> List.map (\pair -> pointFrame sectionStart section pair)
+        |> List.map (\pair -> pointFrame sectionStart ( sectionIndex, section ) pair)
 
 
-pointFrame : Int -> Section -> ( Int, Point ) -> Frame
-pointFrame sectionStart section ( index, point ) =
+pointFrame : Int -> ( Int, Section ) -> ( Int, Point ) -> Frame
+pointFrame sectionStart ( sectionIndex, section ) ( index, point ) =
     let
         ( rawStart, rawEnd ) =
             entryFrameTimes section.points ( index, point )
@@ -121,7 +111,7 @@ pointFrame sectionStart section ( index, point ) =
         end =
             rawEnd + sectionStart
     in
-        { section = section, point = point, start = start, end = end }
+        { section = Just sectionIndex, point = Just index, start = start, end = end }
 
 
 getLastFrame : List Frame -> Frame

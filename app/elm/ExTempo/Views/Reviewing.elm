@@ -43,12 +43,12 @@ talkInfo : Model -> Html Msg
 talkInfo model =
     div [ class "row" ]
         [ div [ class "row" ]
-            [ div [ class "col s12 m4 right-align" ] [ h5 [ class "header light" ] [ text "ExTempo Topic:" ] ]
-            , div [ class "col s12 m8" ] [ p [] [ text model.talk.title ] ]
+            [ div [ class "col s12 m4 right-align" ] [ h6 [ class "header light" ] [ text "Topic" ] ]
+            , div [ class "col s12 m8" ] [ h5 [ class "header light" ] [ text model.talk.title ] ]
             ]
         , div [ class "row" ]
-            [ div [ class "col s12 m4 right-align" ] [ h5 [ class "header light" ] [ text "Duration:" ] ]
-            , div [ class "col s12 m8" ] [ p [] [ text (secondsToDuration model.talk.duration) ] ]
+            [ div [ class "col s12 m4 right-align" ] [ h6 [ class "header light" ] [ text "Duration" ] ]
+            , div [ class "col s12 m8" ] [ h5 [ class "header light" ] [ text (secondsToDuration model.talk.duration) ] ]
             ]
         ]
 

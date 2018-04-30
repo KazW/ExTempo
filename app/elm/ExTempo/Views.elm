@@ -4,7 +4,7 @@ import ExTempo.Models as Models exposing (..)
 import ExTempo.Views.Header exposing (headerView)
 import ExTempo.Views.Editing exposing (editingView)
 import ExTempo.Views.Reviewing exposing (reviewingView)
-import ExTempo.Views.Speaking exposing (speakingView)
+import ExTempo.Views.Talking exposing (talkingView)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 
@@ -21,6 +21,6 @@ view model =
 content : Model -> Html Msg
 content model =
     if model.action == Talking then
-        speakingView model
+        talkingView model
     else
         reviewingView model

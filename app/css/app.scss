@@ -7,11 +7,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.sidenav {
-  width: 300px;
-}
-
-.sidenav li>div {
+.talk-list li>span {
     color: rgba(0,0,0,0.87);
     display: block;
     font-size: 14px;
@@ -21,17 +17,38 @@ body {
     padding: 0 32px;
 }
 
-ul.sidenav.sidenav-fixed li.active {
+ul.talk-list li.active {
     background-color: rgba(50,50,50,0.06);
 }
 
-ul.sidenav.sidenav-fixed li div {
+ul.talk-list li span {
     font-size: 13px;
     line-height: 44px;
     height: 44px;
     padding: 0 30px;
 }
 
-ul.sidenav.sidenav-fixed li {
+ul.talk-list li {
     line-height: 44px;
+}
+
+.collapsible-header {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+}
+
+.collapsible-body {
+    display: block;
+    border-bottom: none;
+    box-sizing: border-box;
+    padding: 0px;
+}
+
+// .talk-list .collapsible-body>ul:not(.collapsible)>li.active, .talk-list .collapsible-body>ul:not(.collapsible)>li.active {
+//     background-color: #ee6e73;
+// }
+
+.talk-list .collapsible-body>ul:not(.collapsible)>li, .talk-list .collapsible-body>ul:not(.collapsible)>li {
+    padding-left: 60px;
 }
