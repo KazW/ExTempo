@@ -20,12 +20,16 @@ headerButton model =
         button_text =
             if model.action == Talking then
                 "stop talk"
+            else if model.talk.duration == 0 then
+                "enter talk details"
             else
                 "start talk"
 
         button_action =
             if model.action == Talking then
                 StopTalking
+            else if model.talk.duration == 0 then
+                EditEntry TalkType
             else
                 StartTalking
     in
@@ -51,19 +55,16 @@ headerView model =
 
 headerNav : Model -> List (Html Msg)
 headerNav model =
-    if model.talk.duration > 0 then
-        [ div [ class "nav-wrapper" ]
-            [ span
-                [ class "brand-logo center"
-                ]
-                [ text (headerText model)
-                ]
-            , ul [ class "right" ]
-                [ li []
-                    [ headerButton model
-                    ]
+    [ div [ class "nav-wrapper" ]
+        [ span
+            [ class "brand-logo center"
+            ]
+            [ text (headerText model)
+            ]
+        , ul [ class "right" ]
+            [ li []
+                [ headerButton model
                 ]
             ]
         ]
-    else
-        []
+    ]

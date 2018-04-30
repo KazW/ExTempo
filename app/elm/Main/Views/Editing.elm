@@ -6,11 +6,14 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 
 
-modalHeaderText : EntryType -> String
-modalHeaderText entryType =
-    case entryType of
+modalHeaderText : Model -> String
+modalHeaderText model =
+    case model.newEntry.entryType of
         TalkType ->
-            "Edit Talk"
+            if model.talk.duration > 0 then
+                "Edit Talk"
+            else
+                "Plan a Talk"
 
         SectionType index ->
             case index of
@@ -33,7 +36,7 @@ editingView : Model -> Html Msg
 editingView model =
     div [ id "editing-modal", class "modal" ]
         [ div [ class "modal-content" ]
-            [ h4 [] [ text (modalHeaderText model.newEntry.entryType) ]
+            [ h4 [] [ text (modalHeaderText model) ]
             , errorMessage model
             , div [ class "row" ]
                 [ div [ class "input-field col s6" ]
@@ -91,7 +94,7 @@ errorMessage : Model -> Html Msg
 errorMessage model =
     case model.errorMessage of
         Nothing ->
-            p [] []
+            p [] [ text "Set the title (at least 1 character) and duration (at least 1 second)." ]
 
         Just error ->
             p [ class "caption", style [ ( "color", "red" ) ] ] [ text error ]

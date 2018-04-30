@@ -2,6 +2,7 @@ module Main.Views.Reviewing exposing (reviewingView)
 
 import Main.Models exposing (..)
 import Main.Views.Helpers exposing (..)
+import Main.Views.Landing exposing (landingView)
 import Array exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -20,19 +21,27 @@ buttonSpacer =
 
 talkView : Model -> List (Html Msg)
 talkView model =
-    [ div [ class "row" ]
-        [ h4 [ class "header light" ]
-            [ text "Talk Options"
-            , buttonSpacer
-            , a
-                [ class "btn-floating waves-effect waves-light"
-                , onClick (EditEntry TalkType)
+    if model.talk.duration > 0 then
+        [ div [ class "row" ]
+            [ h4 [ class "header light" ]
+                [ text "Talk Options"
+                , buttonSpacer
+                , a
+                    [ class "btn-floating waves-effect waves-light"
+                    , onClick (EditEntry TalkType)
+                    ]
+                    [ i [ class "medium material-icons" ] [ text "edit" ] ]
                 ]
-                [ i [ class "medium material-icons" ] [ text "edit" ] ]
             ]
-        , p [ class "caption" ] [ text "Set the main topic and total duration, both are required." ]
+        , talkInfo model
         ]
-    , div [ class "row" ]
+    else
+        [ landingView model ]
+
+
+talkInfo : Model -> Html Msg
+talkInfo model =
+    div [ class "row" ]
         [ div [ class "row" ]
             [ div [ class "col s12 m4 right-align" ] [ h5 [ class "header light" ] [ text "Main Topic:" ] ]
             , div [ class "col s12 m8" ] [ p [] [ text model.talk.title ] ]
@@ -42,7 +51,6 @@ talkView model =
             , div [ class "col s12 m8" ] [ p [] [ text (secondsToDuration model.talk.duration) ] ]
             ]
         ]
-    ]
 
 
 sectionsView : Model -> List (Html Msg)
@@ -58,7 +66,6 @@ sectionsView model =
                     ]
                     [ i [ class "medium material-icons" ] [ text "add" ] ]
                 ]
-            , p [ class "caption" ] [ text "Set the section topic and duration, both are required." ]
             ]
         , eachSectionView model
         ]
