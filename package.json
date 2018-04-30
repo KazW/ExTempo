@@ -2,11 +2,12 @@
   "private": true,
   "engines": {
     "node": "8.6.0",
-    "npm": "5.3.0"
+    "npm": "6.0.0"
   },
   "scripts": {
     "start": "webpack-dev-server --hot --inline",
-    "compile": "webpack -p"
+    "compile": "webpack -p",
+    "heroku-postbuild": "npm compile"
   },
   "dependencies": {
     "autoprefixer": "^6.7.5",
