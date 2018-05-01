@@ -1,6 +1,7 @@
 module ExTempo.Views.Helpers exposing (..)
 
 import ExTempo.Time exposing (..)
+import Array exposing (..)
 
 
 stringToInt : String -> Int
@@ -16,29 +17,43 @@ stringToInt string =
                 int
 
 
+entriesDuration : Array { e | duration : Int } -> Int
+entriesDuration entries =
+    entries
+        |> Array.map (\entry -> entry.duration)
+        |> Array.toList
+        |> List.sum
+
+
 secondsToDuration : Int -> String
 secondsToDuration time =
     let
         ( hours, minutes, seconds ) =
             timeBreakdown time
 
-        times =
+        hourString =
             if hours > 0 then
-                [ (toString hours)
-                , "hours,"
-                , (toString minutes)
-                , "minutes,"
-                , (toString seconds)
-                , "seconds"
-                ]
+                (toString hours) ++ " hours"
             else
-                [ (toString minutes)
-                , "minutes,"
-                , (toString seconds)
-                , "seconds"
-                ]
+                ""
+
+        minuteString =
+            if minutes > 0 then
+                (toString minutes) ++ " minutes"
+            else
+                ""
+
+        secondString =
+            if seconds > 0 then
+                (toString seconds) ++ " seconds"
+            else if hours == 0 && minutes == 0 then
+                "0 seconds"
+            else
+                ""
     in
-        String.join " " times
+        [ hourString, minuteString, secondString ]
+            |> List.filter (\time -> time /= "")
+            |> String.join ", "
 
 
 padTime : String -> String
