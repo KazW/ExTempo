@@ -1,4 +1,4 @@
-module ExTempo.Updates.ValidateEntry exposing (validateEntry)
+module ExTempo.Updates.ValidateEntry exposing (validateEntry, entriesDuration)
 
 import ExTempo.Models exposing (..)
 import Array exposing (..)
@@ -81,7 +81,7 @@ validateSectionEntry model maybeIndex =
             Just sectionIndex ->
                 let
                     minDuration =
-                        pointsDuration (getSection maybeIndex model.talk).points
+                        entriesDuration (getSection maybeIndex model.talk).points
 
                     maxDuration =
                         model.talk.duration - (filteredTalkDuration sectionIndex model.talk)
@@ -105,7 +105,7 @@ validatePointEntry model sectionIndex maybeIndex =
             Nothing ->
                 let
                     maxDuration =
-                        section.duration - pointsDuration section.points
+                        section.duration - entriesDuration section.points
                 in
                     validateDurationRange minDuration maxDuration duration
 
@@ -174,7 +174,7 @@ sectionsDuration sections =
 
 sectionDuration : Section -> Int
 sectionDuration section =
-    case List.maximum [ section.duration, (pointsDuration section.points) ] of
+    case List.maximum [ section.duration, (entriesDuration section.points) ] of
         Nothing ->
             0
 
@@ -182,10 +182,10 @@ sectionDuration section =
             duration
 
 
-pointsDuration : Array Point -> Int
-pointsDuration points =
-    points
-        |> Array.map (\point -> point.duration)
+entriesDuration : Array { e | duration : Int } -> Int
+entriesDuration entries =
+    entries
+        |> Array.map (\entry -> entry.duration)
         |> Array.toList
         |> List.sum
 
@@ -197,4 +197,4 @@ filteredPointsDuration pointIndex points =
         |> List.filter (\( index, _ ) -> index /= pointIndex)
         |> List.map (\( _, section ) -> section)
         |> Array.fromList
-        |> pointsDuration
+        |> entriesDuration
