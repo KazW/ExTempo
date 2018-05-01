@@ -28,7 +28,6 @@ class Ports {
   closeModal(input) {
     $('#' + input).modal('close');
     window.ExTempoPorts.updateTextFields();
-
   }
 }
 
