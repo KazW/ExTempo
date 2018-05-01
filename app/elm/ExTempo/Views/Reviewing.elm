@@ -66,18 +66,18 @@ sectionsView model =
                     ]
                     [ i [ class "medium material-icons" ] [ text "add" ] ]
                 ]
-            ]
-        , p
-            [ class "caption" ]
-            [ ul []
-                [ li [] [ text ("Sections duration:   " ++ (secondsToDuration (entriesDuration model.talk.sections))) ]
-                , li []
-                    [ text
-                        ("Extra time:   "
-                            ++ (secondsToDuration
-                                    (model.talk.duration - (entriesDuration model.talk.sections))
-                               )
-                        )
+            , p
+                [ class "caption" ]
+                [ ul []
+                    [ li [] [ text ("Sections duration:   " ++ (secondsToDuration (entriesDuration model.talk.sections))) ]
+                    , li []
+                        [ text
+                            ("Extra time:   "
+                                ++ (secondsToDuration
+                                        (model.talk.duration - (entriesDuration model.talk.sections))
+                                   )
+                            )
+                        ]
                     ]
                 ]
             ]
