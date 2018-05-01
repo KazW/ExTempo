@@ -42,6 +42,7 @@ editingView model =
                 [ div [ class "input-field col s12" ]
                     [ input
                         [ id "title-field"
+                        , tabindex 1
                         , value model.newEntry.title
                         , type_ "text"
                         , onInput (\data -> UserInput (Title data))
@@ -54,6 +55,7 @@ editingView model =
                 [ div [ class "input-field col s6" ]
                     [ input
                         [ id "minutes-field"
+                        , tabindex 2
                         , value (toString model.newEntry.minutes)
                         , type_ "text"
                         , onInput (\data -> UserInput (Minutes data))
@@ -64,6 +66,7 @@ editingView model =
                 , div [ class "input-field col s6" ]
                     [ input
                         [ id "seconds-field"
+                        , tabindex 3
                         , value (toString model.newEntry.seconds)
                         , type_ "text"
                         , onInput (\data -> UserInput (Seconds data))
@@ -76,6 +79,7 @@ editingView model =
         , div [ class "modal-footer" ]
             [ a
                 [ class "waves-effect waves-red btn-flat"
+                , tabindex 5
                 , onClick ClearEntry
                 ]
                 [ i [ class "material-icons" ]
@@ -83,6 +87,7 @@ editingView model =
                 ]
             , a
                 [ class "waves-effect waves-green btn-flat"
+                , tabindex 4
                 , onClick ValidateEntry
                 ]
                 [ i [ class "material-icons" ]
