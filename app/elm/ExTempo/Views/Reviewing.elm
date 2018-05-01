@@ -3,6 +3,7 @@ module ExTempo.Views.Reviewing exposing (reviewingView)
 import ExTempo.Models exposing (..)
 import ExTempo.Views.Helpers exposing (..)
 import ExTempo.Views.Landing exposing (landingView)
+import ExTempo.Updates.ValidateEntry exposing (entriesDuration)
 import Array exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -67,6 +68,15 @@ sectionsView model =
                     [ i [ class "medium material-icons" ] [ text "add" ] ]
                 ]
             ]
+        , p
+            [ class "caption" ]
+            [ text
+                ("Extra time:   "
+                    ++ (secondsToDuration
+                            (model.talk.duration - (entriesDuration model.talk.sections))
+                       )
+                )
+            ]
         , eachSectionView model
         ]
     else
@@ -83,34 +93,44 @@ eachSectionView model =
 
 renderSection : ( Int, Section ) -> Html Msg
 renderSection ( index, section ) =
-    div [ class "col s12" ]
-        [ div [ class "col s12" ]
-            [ h5 [ class "header light" ]
-                [ text section.title
-                , buttonSpacer
-                , a
-                    [ class "btn-floating waves-effect waves-light"
-                    , onClick (DeleteEntry (SectionType (Just index)))
+    let
+        pointsDuration =
+            entriesDuration section.points
+    in
+        div [ class "col s12" ]
+            [ div [ class "col s12" ]
+                [ h5 [ class "header light" ]
+                    [ text section.title
+                    , buttonSpacer
+                    , a
+                        [ class "btn-floating waves-effect waves-light"
+                        , onClick (DeleteEntry (SectionType (Just index)))
+                        ]
+                        [ i [ class "medium material-icons" ] [ text "delete" ] ]
+                    , buttonSpacer
+                    , a
+                        [ class "btn-floating waves-effect waves-light"
+                        , onClick (EditEntry (SectionType (Just index)))
+                        ]
+                        [ i [ class "medium material-icons" ] [ text "edit" ] ]
+                    , buttonSpacer
+                    , a
+                        [ class "btn-floating waves-effect waves-light"
+                        , onClick (EditEntry (PointType index Nothing))
+                        ]
+                        [ i [ class "medium material-icons" ] [ text "add" ] ]
                     ]
-                    [ i [ class "medium material-icons" ] [ text "delete" ] ]
-                , buttonSpacer
-                , a
-                    [ class "btn-floating waves-effect waves-light"
-                    , onClick (EditEntry (SectionType (Just index)))
+                , p [ class "caption" ]
+                    [ ul []
+                        [ li [] [ text ("Section duration:   " ++ secondsToDuration section.duration) ]
+                        , li [] [ text ("Points duration:   " ++ secondsToDuration pointsDuration) ]
+                        , li [] [ text ("Extra time:   " ++ secondsToDuration (section.duration - pointsDuration)) ]
+                        ]
                     ]
-                    [ i [ class "medium material-icons" ] [ text "edit" ] ]
-                , buttonSpacer
-                , a
-                    [ class "btn-floating waves-effect waves-light"
-                    , onClick (EditEntry (PointType index Nothing))
-                    ]
-                    [ i [ class "medium material-icons" ] [ text "add" ] ]
+                , pointsView index section
+                , hr [] []
                 ]
-            , p [ class "caption" ] [ text (secondsToDuration section.duration) ]
-            , pointsView index section
-            , hr [] []
             ]
-        ]
 
 
 pointsView : Int -> Section -> Html Msg
