@@ -32,28 +32,33 @@ secondsToDuration time =
             timeBreakdown time
 
         hourString =
-            if hours > 0 then
-                (toString hours) ++ " hours"
-            else
-                ""
+            withCount "hour" "hours" hours
 
         minuteString =
-            if minutes > 0 then
-                (toString minutes) ++ " minutes"
-            else
-                ""
+            withCount "minute" "minutes" minutes
 
         secondString =
-            if seconds > 0 then
-                (toString seconds) ++ " seconds"
-            else if hours == 0 && minutes == 0 then
+            if hours == 0 && minutes == 0 && seconds == 0 then
                 "0 seconds"
             else
-                ""
+                withCount "second" "seconds" seconds
     in
         [ hourString, minuteString, secondString ]
             |> List.filter (\time -> time /= "")
             |> String.join ", "
+
+
+withCount : String -> String -> Int -> String
+withCount singular plural count =
+    if count == 0 then
+        ""
+    else
+        (toString count)
+            ++ " "
+            ++ if count == 1 then
+                singular
+               else
+                plural
 
 
 padTime : String -> String
