@@ -39,7 +39,7 @@ editingView model =
             [ h4 [] [ text (modalHeaderText model) ]
             , errorMessage model
             , div [ class "row" ]
-                [ div [ class "input-field col s6" ]
+                [ div [ class "input-field col s12" ]
                     [ input
                         [ id "title-field"
                         , value model.newEntry.title
@@ -49,7 +49,9 @@ editingView model =
                         []
                     , label [ for "title-field" ] [ text "Title" ]
                     ]
-                , div [ class "input-field col s6" ]
+                ]
+            , div [ class "row" ]
+                [ div [ class "input-field col s6" ]
                     [ input
                         [ id "minutes-field"
                         , value (toString model.newEntry.minutes)
