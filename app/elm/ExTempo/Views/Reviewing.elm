@@ -55,36 +55,39 @@ talkInfo model =
 
 sectionsView : Model -> List (Html Msg)
 sectionsView model =
-    if model.talk.duration > 0 then
-        [ div [ class "row" ]
-            [ h4 [ class "header light" ]
-                [ text "Sections"
-                , buttonSpacer
-                , a
-                    [ class "btn-floating waves-effect waves-light"
-                    , onClick (EditEntry (SectionType Nothing))
+    let
+        sectionsDuration =
+            entriesDuration model.talk.sections
+
+        extraTime =
+            model.talk.duration - (entriesDuration model.talk.sections)
+    in
+        if model.talk.duration > 0 then
+            [ div [ class "row" ]
+                [ h4 [ class "header light" ]
+                    [ text "Sections"
+                    , buttonSpacer
+                    , if extraTime > 0 then
+                        a
+                            [ class "btn-floating waves-effect waves-light"
+                            , onClick (EditEntry (SectionType Nothing))
+                            ]
+                            [ i [ class "medium material-icons" ] [ text "add" ] ]
+                      else
+                        span [] []
                     ]
-                    [ i [ class "medium material-icons" ] [ text "add" ] ]
-                ]
-            , p
-                [ class "caption" ]
-                [ ul []
-                    [ li [] [ text ("Sections duration:   " ++ (secondsToDuration (entriesDuration model.talk.sections))) ]
-                    , li []
-                        [ text
-                            ("Extra time:   "
-                                ++ (secondsToDuration
-                                        (model.talk.duration - (entriesDuration model.talk.sections))
-                                   )
-                            )
+                , p
+                    [ class "caption" ]
+                    [ ul []
+                        [ li [] [ text ("Sections duration:   " ++ secondsToDuration sectionsDuration) ]
+                        , li [] [ text ("Extra time:   " ++ secondsToDuration extraTime) ]
                         ]
                     ]
                 ]
+            , eachSectionView model
             ]
-        , eachSectionView model
-        ]
-    else
-        [ div [ class "row" ] [] ]
+        else
+            [ div [ class "row" ] [] ]
 
 
 eachSectionView : Model -> Html Msg
@@ -100,6 +103,9 @@ renderSection ( index, section ) =
     let
         pointsDuration =
             entriesDuration section.points
+
+        extraTime =
+            section.duration - pointsDuration
     in
         div [ class "col s12" ]
             [ div [ class "col s12" ]
@@ -118,17 +124,20 @@ renderSection ( index, section ) =
                         ]
                         [ i [ class "medium material-icons" ] [ text "edit" ] ]
                     , buttonSpacer
-                    , a
-                        [ class "btn-floating waves-effect waves-light"
-                        , onClick (EditEntry (PointType index Nothing))
-                        ]
-                        [ i [ class "medium material-icons" ] [ text "add" ] ]
+                    , if extraTime > 0 then
+                        a
+                            [ class "btn-floating waves-effect waves-light"
+                            , onClick (EditEntry (PointType index Nothing))
+                            ]
+                            [ i [ class "medium material-icons" ] [ text "add" ] ]
+                      else
+                        span [] []
                     ]
                 , p [ class "caption" ]
                     [ ul []
                         [ li [] [ text ("Section duration:   " ++ secondsToDuration section.duration) ]
                         , li [] [ text ("Points duration:   " ++ secondsToDuration pointsDuration) ]
-                        , li [] [ text ("Extra time:   " ++ secondsToDuration (section.duration - pointsDuration)) ]
+                        , li [] [ text ("Extra time:   " ++ secondsToDuration extraTime) ]
                         ]
                     ]
                 , pointsView index section
