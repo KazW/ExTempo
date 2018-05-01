@@ -3,7 +3,6 @@ module ExTempo.Views.Reviewing exposing (reviewingView)
 import ExTempo.Models exposing (..)
 import ExTempo.Views.Helpers exposing (..)
 import ExTempo.Views.Landing exposing (landingView)
-import ExTempo.Updates.ValidateEntry exposing (entriesDuration)
 import Array exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -70,12 +69,17 @@ sectionsView model =
             ]
         , p
             [ class "caption" ]
-            [ text
-                ("Extra time:   "
-                    ++ (secondsToDuration
-                            (model.talk.duration - (entriesDuration model.talk.sections))
-                       )
-                )
+            [ ul []
+                [ li [] [ text ("Sections duration:   " ++ (secondsToDuration (entriesDuration model.talk.sections))) ]
+                , li []
+                    [ text
+                        ("Extra time:   "
+                            ++ (secondsToDuration
+                                    (model.talk.duration - (entriesDuration model.talk.sections))
+                               )
+                        )
+                    ]
+                ]
             ]
         , eachSectionView model
         ]
@@ -135,10 +139,13 @@ renderSection ( index, section ) =
 
 pointsView : Int -> Section -> Html Msg
 pointsView sectionIndex section =
-    div [ class "col s12" ]
-        [ h6 [ class "header light" ] [ text "Points" ]
-        , div [ class "col s12" ] [ eachPointView sectionIndex section ]
-        ]
+    if length section.points == 0 then
+        div [] []
+    else
+        div [ class "col s12" ]
+            [ h6 [ class "header light" ] [ text "Points" ]
+            , div [ class "col s12" ] [ eachPointView sectionIndex section ]
+            ]
 
 
 eachPointView : Int -> Section -> Html Msg

@@ -1,10 +1,10 @@
-module ExTempo.Updates.ValidateEntry exposing (validateEntry, entriesDuration)
+module ExTempo.Updates.ValidateEntry exposing (validateEntry)
 
 import ExTempo.Models exposing (..)
 import Array exposing (..)
 import ExTempo.Ports exposing (closeModal, updateTextFields)
 import ExTempo.Updates.SaveEntry exposing (..)
-import ExTempo.Views.Helpers exposing (secondsToDuration)
+import ExTempo.Views.Helpers exposing (secondsToDuration, entriesDuration)
 
 
 validateEntry : Model -> ( Model, Cmd Msg )
@@ -180,14 +180,6 @@ sectionDuration section =
 
         Just duration ->
             duration
-
-
-entriesDuration : Array { e | duration : Int } -> Int
-entriesDuration entries =
-    entries
-        |> Array.map (\entry -> entry.duration)
-        |> Array.toList
-        |> List.sum
 
 
 filteredPointsDuration : Int -> Array Point -> Int
