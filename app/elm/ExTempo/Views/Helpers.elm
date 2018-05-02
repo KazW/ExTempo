@@ -63,7 +63,7 @@ withCount singular plural count =
 
 padTime : String -> String
 padTime time =
-    String.padLeft 2 '0' time
+    time |> String.padLeft 2 '0'
 
 
 secondsToTime : Int -> String
@@ -74,13 +74,13 @@ secondsToTime time =
 
         times =
             if hours > 0 then
-                [ padTime (toString hours)
+                [ toString hours
                 , padTime (toString minutes)
                 , padTime (toString seconds)
                 ]
             else
-                [ padTime (toString minutes)
+                [ toString minutes
                 , padTime (toString seconds)
                 ]
     in
-        String.join ":" times
+        times |> String.join ":"
