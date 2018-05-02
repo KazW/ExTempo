@@ -176,12 +176,12 @@ renderPoint ( pointIndex, point ) sectionIndex section =
         , text (secondsToDuration point.duration)
         , buttonSpacer
         , a
-            [ class "waves-effect waves-light"
+            [ class "waves-effect waves-light point-button"
             , onClick (DeleteEntry (PointType sectionIndex (Just pointIndex)))
             ]
             [ i [ class "tiny material-icons" ] [ text "delete" ] ]
         , a
-            [ class "waves-effect waves-light"
+            [ class "waves-effect waves-light point-button"
             , onClick (EditEntry (PointType sectionIndex (Just pointIndex)))
             ]
             [ i [ class "tiny material-icons" ] [ text "edit" ] ]
