@@ -170,7 +170,7 @@ eachPointView sectionIndex section =
 
 renderPoint : ( Int, Point ) -> Int -> Section -> Html Msg
 renderPoint ( pointIndex, point ) sectionIndex section =
-    li []
+    li [ class "point-li" ]
         [ text point.title
         , text " - "
         , text (secondsToDuration point.duration)

@@ -35,7 +35,7 @@ headerButton model =
     in
         a
             [ href "#"
-            , class "waves-effect waves-light btn-large"
+            , class "waves-effect btn-large"
             , onClick button_action
             ]
             [ text button_text

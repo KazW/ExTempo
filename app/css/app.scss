@@ -1,14 +1,15 @@
 $roboto-font-path: "~materialize-css/dist/fonts/roboto/";
 
-@import "materialize-css/sass/materialize";
+@import "materialize";
 
 body {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
+    @extend .grey-text;
+    @extend .grey, .darken-4;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
 }
 
 .talk-list li>span {
-    color: rgba(0,0,0,0.87);
     display: block;
     font-size: 14px;
     font-weight: 500;
@@ -18,7 +19,7 @@ body {
 }
 
 ul.talk-list li.active {
-    background-color: rgba(50,50,50,0.06);
+    background-color: rgba(250, 250, 250, 0.1);
 }
 
 ul.talk-list li span {
@@ -51,8 +52,8 @@ ul.talk-list li {
 
 .point-button {
     text-decoration: none;
-    background-color: #26a69a;
-    color: white;
+    background-color: $secondary-color;
+    color: $button-floating-color;
     border-radius: 50%;
     width: 1.5rem;
     height: 1.5rem;
@@ -60,4 +61,28 @@ ul.talk-list li {
     padding-top: 0.05rem;
     padding-left: 0.25rem;
     margin: 0 0.1rem;
+}
+
+.point-li {
+    margin: 0.4rem 0;
+}
+
+.divider {
+    @extend .grey, .darken-2;
+}
+
+.modal, .modal-footer {
+    @extend body;
+}
+
+.progress {
+    background-color: darken($progress-bar-color, 15%);
+}
+
+.dark-red {
+    background-color: $dark-red;
+}
+
+.dark-green {
+    background-color: $dark-green;
 }
