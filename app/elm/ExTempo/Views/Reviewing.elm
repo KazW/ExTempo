@@ -83,8 +83,8 @@ sectionsView model =
                         , li [] [ text ("Extra time:   " ++ secondsToDuration extraTime) ]
                         ]
                     ]
+                , eachSectionView model
                 ]
-            , eachSectionView model
             ]
         else
             [ div [ class "row" ] [] ]
@@ -94,11 +94,11 @@ eachSectionView : Model -> Html Msg
 eachSectionView model =
     model.talk.sections
         |> Array.toIndexedList
-        |> List.map renderSection
-        |> div [ class "row" ]
+        |> List.concatMap renderSection
+        |> div [ class "" ]
 
 
-renderSection : ( Int, Section ) -> Html Msg
+renderSection : ( Int, Section ) -> List (Html Msg)
 renderSection ( index, section ) =
     let
         pointsDuration =
@@ -107,43 +107,46 @@ renderSection ( index, section ) =
         extraTime =
             section.duration - pointsDuration
     in
-        div [ class "col s12" ]
+        [ div [ class "row section" ]
             [ div [ class "col s12" ]
-                [ h5 [ class "header light" ]
-                    [ text section.title
-                    , buttonSpacer
-                    , a
-                        [ class "btn-floating waves-effect waves-light"
-                        , onClick (DeleteEntry (SectionType (Just index)))
-                        ]
-                        [ i [ class "medium material-icons" ] [ text "delete" ] ]
-                    , buttonSpacer
-                    , a
-                        [ class "btn-floating waves-effect waves-light"
-                        , onClick (EditEntry (SectionType (Just index)))
-                        ]
-                        [ i [ class "medium material-icons" ] [ text "edit" ] ]
-                    , buttonSpacer
-                    , if extraTime > 0 then
-                        a
+                [ div [ class "col s12" ]
+                    [ h5 [ class "header light" ]
+                        [ text section.title
+                        , buttonSpacer
+                        , a
                             [ class "btn-floating waves-effect waves-light"
-                            , onClick (EditEntry (PointType index Nothing))
+                            , onClick (DeleteEntry (SectionType (Just index)))
                             ]
-                            [ i [ class "medium material-icons" ] [ text "add" ] ]
-                      else
-                        span [] []
-                    ]
-                , p [ class "caption" ]
-                    [ ul []
-                        [ li [] [ text ("Section duration:   " ++ secondsToDuration section.duration) ]
-                        , li [] [ text ("Points duration:   " ++ secondsToDuration pointsDuration) ]
-                        , li [] [ text ("Extra time:   " ++ secondsToDuration extraTime) ]
+                            [ i [ class "medium material-icons" ] [ text "delete" ] ]
+                        , buttonSpacer
+                        , a
+                            [ class "btn-floating waves-effect waves-light"
+                            , onClick (EditEntry (SectionType (Just index)))
+                            ]
+                            [ i [ class "medium material-icons" ] [ text "edit" ] ]
+                        , buttonSpacer
+                        , if extraTime > 0 then
+                            a
+                                [ class "btn-floating waves-effect waves-light"
+                                , onClick (EditEntry (PointType index Nothing))
+                                ]
+                                [ i [ class "medium material-icons" ] [ text "add" ] ]
+                          else
+                            span [] []
                         ]
+                    , p [ class "caption" ]
+                        [ ul []
+                            [ li [] [ text ("Section duration:   " ++ secondsToDuration section.duration) ]
+                            , li [] [ text ("Points duration:   " ++ secondsToDuration pointsDuration) ]
+                            , li [] [ text ("Extra time:   " ++ secondsToDuration extraTime) ]
+                            ]
+                        ]
+                    , pointsView index section
                     ]
-                , pointsView index section
-                , hr [] []
                 ]
             ]
+        , div [ class "divider" ] []
+        ]
 
 
 pointsView : Int -> Section -> Html Msg
