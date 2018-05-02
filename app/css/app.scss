@@ -4,7 +4,7 @@ $roboto-font-path: "~materialize-css/dist/fonts/roboto/";
 
 body {
     @extend .grey-text;
-    @extend .grey, .darken-4;
+    @extend .blue-grey, .darken-4;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
 }
@@ -68,7 +68,7 @@ ul.talk-list li {
 }
 
 .divider {
-    @extend .grey, .darken-2;
+    @extend .blue-grey, .darken-2;
 }
 
 .modal, .modal-footer {
