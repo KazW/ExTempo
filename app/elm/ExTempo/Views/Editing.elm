@@ -78,15 +78,16 @@ editingView model =
             ]
         , div [ class "modal-footer" ]
             [ a
-                [ class "waves-effect waves-red btn-flat"
+                [ class "waves-effect waves-red btn-flat dark-red"
                 , tabindex 5
                 , onClick ClearEntry
                 ]
                 [ i [ class "material-icons" ]
                     [ text "clear" ]
                 ]
+            , text " "
             , a
-                [ class "waves-effect waves-green btn-flat"
+                [ class "waves-effect waves-green btn-flat dark-green"
                 , tabindex 4
                 , onClick ValidateEntry
                 ]
@@ -104,4 +105,4 @@ errorMessage model =
             p [] [ text "Set the title (at least 1 character) and duration (at least 1 second)." ]
 
         Just error ->
-            p [ class "caption", style [ ( "color", "red" ) ] ] [ text error ]
+            p [ class "caption red-text" ] [ text error ]
