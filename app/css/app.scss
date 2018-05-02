@@ -45,10 +45,19 @@ ul.talk-list li {
     padding: 0px;
 }
 
-// .talk-list .collapsible-body>ul:not(.collapsible)>li.active, .talk-list .collapsible-body>ul:not(.collapsible)>li.active {
-//     background-color: #ee6e73;
-// }
-
 .talk-list .collapsible-body>ul:not(.collapsible)>li, .talk-list .collapsible-body>ul:not(.collapsible)>li {
     padding-left: 60px;
+}
+
+.point-button {
+    text-decoration: none;
+    background-color: #26a69a;
+    color: white;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.8rem;
+    padding-top: 0.05rem;
+    padding-left: 0.25rem;
+    margin: 0 0.1rem;
 }
