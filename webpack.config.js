@@ -1,20 +1,21 @@
 // Bring in everything needed for the build.
-var webpack           = require('webpack');
-var merge             = require('webpack-merge');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var MiniCssExtractPlugin = require("mini-css-extract-plugin");
-var WebpackHtmlPlugin = require( 'html-webpack-plugin' );
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-var CompressionPlugin = require('compression-webpack-plugin');
+const webpack           = require('webpack');
+const merge             = require('webpack-merge');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const WebpackHtmlPlugin = require( 'html-webpack-plugin' );
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const SentryPlugin = require('@sentry/webpack-plugin');
 
 // Setup the environment.
-var path                  = require('path');
-var env                   = process.env.NODE_ENV || 'development';
-var staticBuild           = env === 'production' || env === 'test';
-var staticBuildPublicPath = process.env.ASSET_HOST || '/';
+const path                  = require('path');
+const env                   = process.env.NODE_ENV || 'development';
+const staticBuild           = env === 'production' || env === 'test';
+const staticBuildPublicPath = process.env.ASSET_HOST || '/';
 
 // Common configuration
-var commonConfig = {
+const commonConfig = {
   mode: env,
 
   entry: {
@@ -89,7 +90,7 @@ var commonConfig = {
 };
 
 // Development configuration
-var devConfig = {
+const devConfig = {
   devtool: 'cheap-module-eval-source-map',
   devServer: {
     contentBase: path.resolve(__dirname) + '/app/static'
@@ -127,7 +128,9 @@ var devConfig = {
             options: {
               pretty: true,
               locals: {
-                api_url: 'http://localhost:4000'
+                api_url: 'http://localhost:4000',
+                sentry_dsn: process.env.SENTRY_DSN || '',
+                release: process.env.HEROKU_RELEASE_VERSION || 'local-test'
               }
             }
           }
@@ -161,7 +164,7 @@ var devConfig = {
 };
 
 // Production configuration
-var staticBuildConfig     = {
+const staticBuildConfig     = {
   output: {
     filename: 'assets/js/[name]-[hash].js',
     publicPath: staticBuildPublicPath,
@@ -180,6 +183,11 @@ var staticBuildConfig     = {
       test: /\.js$|\.css$|\.(svg|woff|woff2|ttf|eot)$/,
       threshold: 10240,
       minRatio: 0.8
+    }),
+    new SentryPlugin({
+      release: process.env.HEROKU_RELEASE_VERSION,
+      include: './dist',
+      ignore: ['node_modules', 'webpack.config.js'],
     })
   ],
   module: {
@@ -211,7 +219,9 @@ var staticBuildConfig     = {
             options: {
               pretty: false,
               locals: {
-                api_url: process.env.API_URL || '/'
+                api_url: process.env.API_URL || '/',
+                sentry_dsn: process.env.SENTRY_DSN || '',
+                release: process.env.HEROKU_RELEASE_VERSION || 'local-test'
               }
             }
           }

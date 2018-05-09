@@ -15,6 +15,16 @@ class Config {
 
     return config;
   }
+
+  sentryDSN() {
+    var metas = document.getElementsByTagName('meta');
+    for (var i = 0; i < metas.length; i++) {
+      if (metas[i].getAttribute('property') === 'sentry-dsn') {
+        return metas[i].getAttribute('content');
+      }
+    }
+    return '';
+  }
 }
 
 module.exports = Config;
