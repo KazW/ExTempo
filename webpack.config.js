@@ -166,6 +166,7 @@ const devConfig = {
 
 // Production configuration
 const staticBuildConfig     = {
+  devtool: 'source-map',
   output: {
     filename: 'assets/js/[name]-[hash].js',
     publicPath: staticBuildPublicPath,
@@ -185,11 +186,11 @@ const staticBuildConfig     = {
       threshold: 10240,
       minRatio: 0.8
     }),
-    new SentryPlugin({
-      release: herokuVersion,
-      include: './dist',
-      ignore: ['node_modules', 'webpack.config.js'],
-    })
+    // new SentryPlugin({
+    //   release: herokuVersion,
+    //   include: './dist',
+    //   ignore: ['node_modules', 'webpack.config.js'],
+    // })
   ],
   module: {
     rules: [
@@ -221,7 +222,7 @@ const staticBuildConfig     = {
               pretty: false,
               locals: {
                 api_url: process.env.API_URL || '/',
-                sentry_dsn: process.env.SENTRY_DSN || '',
+                sentry_dsn: process.env.SENTRY_CLIENT_DSN || '',
                 release: herokuVersion
               }
             }
