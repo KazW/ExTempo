@@ -16,7 +16,7 @@ class Ports {
   }
 
   // Used when dynamically updating Materialize text fields.
-  updateTextFields(input) {
+  updateTextFields() {
     window.Materialize.updateTextFields();
   }
 

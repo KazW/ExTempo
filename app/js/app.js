@@ -7,8 +7,8 @@ require('js/style');
 const Elm    = require('elm/ExTempo');
 const Config = require('js/config');
 const Ports  = require('js/ports');
-const config = new Config;
+const config = new Config();
 
 // Hack to get around Elm some how breaking "this" scoping in class methods.
 window.ExTempo      = Elm.ExTempo.fullscreen(config.fromMeta());
-window.ExTempoPorts = new Ports;
+window.ExTempoPorts = new Ports();

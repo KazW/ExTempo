@@ -2,8 +2,9 @@
 var webpack           = require('webpack');
 var merge             = require('webpack-merge');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var WebpackHtmlPlugin = require( 'html-webpack-plugin' );
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var CompressionPlugin = require('compression-webpack-plugin');
 
 // Setup the environment.
@@ -14,6 +15,8 @@ var staticBuildPublicPath = process.env.ASSET_HOST || '/';
 
 // Common configuration
 var commonConfig = {
+  mode: env,
+
   entry: {
     app: './app/js/app.js'
   },
@@ -60,13 +63,18 @@ var commonConfig = {
       // JS/ES6 Loader
       {
         test: /\.js$/,
+        enforce: 'pre',
         exclude: /node_modules/,
-        loader: 'jshint-loader',
-        options: {
-          camelcase: true,
-          emitErrors: false,
-          failOnHint: false
-        }
+        use: [
+          {
+            loader: `jshint-loader`,
+            options: {
+              camelcase: true,
+              emitErrors: false,
+              failOnHint: false
+            }
+          }
+        ]
       },
       {
         test: /\.js$/,
@@ -98,9 +106,9 @@ var devConfig = {
       {
         test: /\.(css|scss)$/,
         loaders: [
-          'style-loader?root=..',
-          'css-loader?root=..',
-          'sass-loader?root=..&includePaths[]=' + path.resolve(__dirname) + '/node_modules'
+          'style-loader',
+          'css-loader',
+          'sass-loader?includePaths[]=' + path.resolve(__dirname) + '/node_modules'
         ]
       },
       // Elm Loader
@@ -112,13 +120,20 @@ var devConfig = {
       // Pug (Slim)
       {
         test: /\.pug$/,
-        loader: 'pug-static-loader',
-        options: {
-          pretty: true,
-          locals: {
-            api_url: 'http://localhost:4000'
+        use: [
+          {
+            loader: 'source-loader'
+          },
+          {
+            loader: 'pug-static-loader',
+            options: {
+              pretty: true,
+              locals: {
+                api_url: 'http://localhost:4000'
+              }
+            }
           }
-        }
+        ]
       },
       // Font loaders
       {
@@ -157,7 +172,7 @@ var staticBuildConfig     = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new CopyWebpackPlugin([{ from: './app/static' }]),
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: 'assets/css/[name]-[hash].css'
     }),
     // Breaks things.
@@ -176,14 +191,11 @@ var staticBuildConfig     = {
       // CSS Loader - Extract CSS into files.
       {
         test: /\.(css|scss)$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            'css-loader?root=..',
-            'sass-loader?root=..&includePaths[]=' + path.resolve(__dirname) + '/node_modules'
-          ],
-          publicPath: staticBuildPublicPath
-        })
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader?root=..',
+          'sass-loader?root=..&includePaths[]=' + path.resolve(__dirname) + '/node_modules'
+        ]
       },
       // Elm Loader
       {
@@ -194,13 +206,20 @@ var staticBuildConfig     = {
       // Pug (Slim)
       {
         test: /\.pug$/,
-        loader: 'pug-static-loader',
-        options: {
-          pretty: false,
-          locals: {
-            api_url: process.env.API_URL || '/',
+        use: [
+          {
+            loader: 'source-loader'
+          },
+          {
+            loader: 'pug-static-loader',
+            options: {
+              pretty: false,
+              locals: {
+                api_url: process.env.API_URL || '/'
+              }
+            }
           }
-        }
+        ]
       },
       // Font loaders
       {
@@ -226,6 +245,18 @@ var staticBuildConfig     = {
         loader: 'file-loader?name=assets/images/[name]-[hash].[ext]'
       }
     ]
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: {
+          compress: {
+            inline: false,
+          },
+        },
+      }),
+    ],
   }
 };
 
