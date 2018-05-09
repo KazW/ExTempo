@@ -2,9 +2,13 @@ $roboto-font-path: "~materialize-css/dist/fonts/roboto/";
 
 @import "materialize";
 
+.color-theme {
+    background-color: darken(color("blue-grey", "darken-4"), 5%);
+    color: lighten(color("grey", "base"), 5%);
+}
+
 body {
-    @extend .grey-text;
-    @extend .blue-grey, .darken-4;
+    @extend .color-theme;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
 }
@@ -72,7 +76,7 @@ ul.talk-list li {
 }
 
 .modal, .modal-footer {
-    @extend body;
+    @extend .color-theme;
 }
 
 .progress {
