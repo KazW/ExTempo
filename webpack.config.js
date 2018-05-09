@@ -45,9 +45,7 @@ var commonConfig = {
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-      Hammer: 'hammerjs/hammer'
+      jQuery: 'jquery'
     }),
     new WebpackHtmlPlugin({
       chunks: ['app'],
@@ -175,8 +173,6 @@ var staticBuildConfig     = {
     new MiniCssExtractPlugin({
       filename: 'assets/css/[name]-[hash].css'
     }),
-    // Breaks things.
-    // new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
     new CompressionPlugin({
       asset: '[path].gz[query]',
