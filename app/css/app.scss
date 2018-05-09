@@ -75,7 +75,7 @@ ul.talk-list li {
     @extend .blue-grey, .darken-2;
 }
 
-.modal, .modal-footer {
+.modal, .modal .modal-footer {
     @extend .color-theme;
 }
 
