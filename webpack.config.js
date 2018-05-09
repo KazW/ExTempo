@@ -13,6 +13,7 @@ const path                  = require('path');
 const env                   = process.env.NODE_ENV || 'development';
 const staticBuild           = env === 'production' || env === 'test';
 const staticBuildPublicPath = process.env.ASSET_HOST || '/';
+const herokuVersion = 'v' + (parseInt((process.env.HEROKU_RELEASE_VERSION || 'v0').substr(1)) + 1);
 
 // Common configuration
 const commonConfig = {
@@ -185,7 +186,7 @@ const staticBuildConfig     = {
       minRatio: 0.8
     }),
     new SentryPlugin({
-      release: process.env.HEROKU_RELEASE_VERSION,
+      release: herokuVersion,
       include: './dist',
       ignore: ['node_modules', 'webpack.config.js'],
     })
@@ -221,7 +222,7 @@ const staticBuildConfig     = {
               locals: {
                 api_url: process.env.API_URL || '/',
                 sentry_dsn: process.env.SENTRY_DSN || '',
-                release: process.env.HEROKU_RELEASE_VERSION || 'local-test'
+                release: herokuVersion
               }
             }
           }
