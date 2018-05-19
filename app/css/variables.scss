@@ -329,8 +329,8 @@ $interval-size: $range / $intervals !default;
 // 24. Collections
 // ==========================================================================
 
-$collection-border-color: #e0e0e0 !default;
-$collection-bg-color: #fff !default;
+$collection-border-color: darken($primary-color, 5%) !default;
+$collection-bg-color: inherit !default;
 $collection-active-bg-color: $secondary-color !default;
 $collection-active-color: lighten($secondary-color, 55%) !default;
 $collection-hover-bg-color: #ddd !default;

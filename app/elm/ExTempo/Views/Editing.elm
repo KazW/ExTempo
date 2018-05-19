@@ -4,16 +4,14 @@ import ExTempo.Models as Models exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Html.Events.Extra exposing (..)
 
 
 modalHeaderText : Model -> String
 modalHeaderText model =
     case model.newEntry.entryType of
         TalkType ->
-            if model.talk.duration > 0 then
-                "Edit Talk"
-            else
-                "Plan a Talk"
+            "Main Topic"
 
         SectionType index ->
             case index of
@@ -46,6 +44,7 @@ editingView model =
                         , value model.newEntry.title
                         , type_ "text"
                         , onInput (\data -> UserInput (Title data))
+                        , onEnter ValidateEntry
                         ]
                         []
                     , label [ for "title-field" ] [ text "Title" ]
@@ -59,6 +58,7 @@ editingView model =
                         , value (toString model.newEntry.minutes)
                         , type_ "text"
                         , onInput (\data -> UserInput (Minutes data))
+                        , onEnter ValidateEntry
                         ]
                         []
                     , label [ for "title-field" ] [ text "Minutes" ]
@@ -70,6 +70,7 @@ editingView model =
                         , value (toString model.newEntry.seconds)
                         , type_ "text"
                         , onInput (\data -> UserInput (Seconds data))
+                        , onEnter ValidateEntry
                         ]
                         []
                     , label [ for "title-field" ] [ text "Seconds" ]
@@ -81,6 +82,7 @@ editingView model =
                 [ class "waves-effect waves-red btn-flat dark-red"
                 , tabindex 5
                 , onClick ClearEntry
+                , onEnter ClearEntry
                 ]
                 [ i [ class "material-icons" ]
                     [ text "clear" ]
@@ -90,6 +92,7 @@ editingView model =
                 [ class "waves-effect waves-green btn-flat dark-green"
                 , tabindex 4
                 , onClick ValidateEntry
+                , onEnter ValidateEntry
                 ]
                 [ i [ class "material-icons" ]
                     [ text "check" ]

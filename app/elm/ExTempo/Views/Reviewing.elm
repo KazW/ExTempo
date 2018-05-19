@@ -11,7 +11,12 @@ import Html.Events exposing (..)
 
 reviewingView : Model -> Html Msg
 reviewingView model =
-    div [ class "container" ] (List.append (talkView model) (sectionsView model))
+    div [ class "container" ]
+        (if model.talk.duration > 0 then
+            List.append [ talkView model ] [ sectionsView model ]
+         else
+            [ landingView model ]
+        )
 
 
 buttonSpacer : Html Msg
@@ -19,87 +24,76 @@ buttonSpacer =
     text "    "
 
 
-talkView : Model -> List (Html Msg)
+talkView : Model -> Html Msg
 talkView model =
-    if model.talk.duration > 0 then
-        [ div [ class "row" ]
-            [ h4 [ class "header light" ]
-                [ text "Talk"
-                , buttonSpacer
-                , a
-                    [ class "btn-floating waves-effect waves-light"
-                    , onClick (EditEntry TalkType)
-                    ]
-                    [ i [ class "medium material-icons" ] [ text "edit" ] ]
-                ]
-            ]
+    div [ class "row" ]
+        [ h4 [ class "header light" ] [ text "Main Topic" ]
         , talkInfo model
         ]
-    else
-        [ landingView model ]
 
 
 talkInfo : Model -> Html Msg
 talkInfo model =
-    div [ class "row" ]
-        [ div [ class "row" ]
-            [ div [ class "col s12 m4 right-align" ] [ h6 [ class "header light" ] [ text "Topic" ] ]
-            , div [ class "col s12 m8" ] [ h5 [ class "header light" ] [ text model.talk.title ] ]
+    div [ class "col s12 m6 l3" ]
+        [ h5 [ class "header light" ]
+            [ a
+                [ class "btn-floating waves-effect waves-light"
+                , onClick (EditEntry TalkType)
+                ]
+                [ i [ class "medium material-icons" ] [ text "edit" ] ]
+            , buttonSpacer
+            , text model.talk.title
             ]
-        , div [ class "row" ]
-            [ div [ class "col s12 m4 right-align" ] [ h6 [ class "header light" ] [ text "Duration" ] ]
-            , div [ class "col s12 m8" ] [ h5 [ class "header light" ] [ text (secondsToDuration model.talk.duration) ] ]
-            ]
+        , p [ class "caption" ] [ talkTable model ]
         ]
 
 
-sectionsView : Model -> List (Html Msg)
-sectionsView model =
-    let
-        sectionsDuration =
-            entriesDuration model.talk.sections
+talkTable : Model -> Html Msg
+talkTable model =
+    [ ( "Total duration:", secondsToDuration model.talk.duration )
+    , ( "Sections duration:", secondsToDuration (entriesDuration model.talk.sections) )
+    , ( "Extra time:", secondsToDuration (extraTalkTime model) )
+    ]
+        |> listToTable
 
-        extraTime =
-            model.talk.duration - (entriesDuration model.talk.sections)
-    in
-        if model.talk.duration > 0 then
-            [ div [ class "row" ]
-                [ h4 [ class "header light" ]
-                    [ text "Sections"
-                    , buttonSpacer
-                    , if extraTime > 0 then
-                        a
-                            [ class "btn-floating waves-effect waves-light"
-                            , onClick (EditEntry (SectionType Nothing))
-                            ]
-                            [ i [ class "medium material-icons" ] [ text "add" ] ]
-                      else
-                        span [] []
-                    ]
-                , p
-                    [ class "caption" ]
-                    [ ul []
-                        [ li [] [ text ("Sections duration:   " ++ secondsToDuration sectionsDuration) ]
-                        , li [] [ text ("Extra time:   " ++ secondsToDuration extraTime) ]
+
+extraTalkTime : Model -> Int
+extraTalkTime model =
+    model.talk.duration - (entriesDuration model.talk.sections)
+
+
+sectionsView : Model -> Html Msg
+sectionsView model =
+    if model.talk.duration > 0 then
+        div [ class "row" ]
+            [ h4 [ class "header light" ]
+                [ if extraTalkTime model > 0 then
+                    a
+                        [ class "btn-floating waves-effect waves-light"
+                        , onClick (EditEntry (SectionType Nothing))
                         ]
-                    ]
-                , eachSectionView model
+                        [ i [ class "medium material-icons" ] [ text "add" ] ]
+                  else
+                    span [] []
+                , buttonSpacer
+                , text "Sections"
                 ]
+            , eachSectionView model
             ]
-        else
-            [ div [ class "row" ] [] ]
+    else
+        span [] []
 
 
 eachSectionView : Model -> Html Msg
 eachSectionView model =
     model.talk.sections
         |> Array.toIndexedList
-        |> List.concatMap renderSection
-        |> div [ class "" ]
+        |> List.concatMap (\pair -> (renderSection pair ((length model.talk.sections) - 1)))
+        |> div []
 
 
-renderSection : ( Int, Section ) -> List (Html Msg)
-renderSection ( index, section ) =
+renderSection : ( Int, Section ) -> Int -> List (Html Msg)
+renderSection ( index, section ) lastIndex =
     let
         pointsDuration =
             entriesDuration section.points
@@ -109,80 +103,88 @@ renderSection ( index, section ) =
     in
         [ div [ class "row section" ]
             [ div [ class "col s12" ]
-                [ div [ class "col s12" ]
-                    [ h5 [ class "header light" ]
-                        [ text section.title
-                        , buttonSpacer
-                        , a
-                            [ class "btn-floating waves-effect waves-light"
-                            , onClick (DeleteEntry (SectionType (Just index)))
-                            ]
-                            [ i [ class "medium material-icons" ] [ text "delete" ] ]
-                        , buttonSpacer
-                        , a
-                            [ class "btn-floating waves-effect waves-light"
-                            , onClick (EditEntry (SectionType (Just index)))
-                            ]
-                            [ i [ class "medium material-icons" ] [ text "edit" ] ]
-                        , buttonSpacer
-                        , if extraTime > 0 then
-                            a
-                                [ class "btn-floating waves-effect waves-light"
-                                , onClick (EditEntry (PointType index Nothing))
-                                ]
-                                [ i [ class "medium material-icons" ] [ text "add" ] ]
-                          else
-                            span [] []
+                [ h5 [ class "header light" ]
+                    [ a
+                        [ class "btn-floating waves-effect waves-light"
+                        , onClick (DeleteEntry (SectionType (Just index)))
                         ]
-                    , p [ class "caption" ]
-                        [ ul []
-                            [ li [] [ text ("Section duration:   " ++ secondsToDuration section.duration) ]
-                            , li [] [ text ("Points duration:   " ++ secondsToDuration pointsDuration) ]
-                            , li [] [ text ("Extra time:   " ++ secondsToDuration extraTime) ]
-                            ]
+                        [ i [ class "medium material-icons" ] [ text "delete" ] ]
+                    , buttonSpacer
+                    , a
+                        [ class "btn-floating waves-effect waves-light"
+                        , onClick (EditEntry (SectionType (Just index)))
                         ]
-                    , pointsView index section
+                        [ i [ class "medium material-icons" ] [ text "edit" ] ]
+                    , buttonSpacer
+                    , text section.title
                     ]
+                , p [ class "caption" ]
+                    [ div [ class "col s12 m6 l3" ]
+                        [ [ ( "Section duration:", secondsToDuration section.duration )
+                          , ( "Points duration:", secondsToDuration pointsDuration )
+                          , ( "Extra time:", secondsToDuration extraTime )
+                          ]
+                            |> listToTable
+                        ]
+                    ]
+                , pointsView index section
                 ]
             ]
-        , div [ class "divider" ] []
+        , if index == lastIndex then
+            span [] []
+          else
+            div [ class "divider" ] []
         ]
 
 
 pointsView : Int -> Section -> Html Msg
 pointsView sectionIndex section =
-    if length section.points == 0 then
-        div [] []
-    else
-        div [ class "col s12" ]
-            [ h6 [ class "header light" ] [ text "Points" ]
-            , div [ class "col s12" ] [ eachPointView sectionIndex section ]
+    div [ class "col s12" ]
+        [ h5 [ class "header light" ]
+            [ if entriesDuration section.points == section.duration then
+                span [] []
+              else
+                a
+                    [ class "btn-floating waves-effect waves-light"
+                    , onClick (EditEntry (PointType sectionIndex Nothing))
+                    ]
+                    [ i [ class "medium material-icons" ] [ text "add" ] ]
+            , buttonSpacer
+            , text "Points"
             ]
+        , if length section.points > 0 then
+            ul [ class "collection" ] (eachPointView sectionIndex section)
+          else
+            span [] []
+        ]
 
 
-eachPointView : Int -> Section -> Html Msg
+eachPointView : Int -> Section -> List (Html Msg)
 eachPointView sectionIndex section =
     section.points
         |> Array.toIndexedList
         |> List.map (\point -> (renderPoint point sectionIndex section))
-        |> div [ class "ul" ]
 
 
 renderPoint : ( Int, Point ) -> Int -> Section -> Html Msg
 renderPoint ( pointIndex, point ) sectionIndex section =
-    li [ class "point-li" ]
-        [ text point.title
-        , text " - "
-        , text (secondsToDuration point.duration)
-        , buttonSpacer
-        , a
-            [ class "waves-effect waves-light point-button"
-            , onClick (DeleteEntry (PointType sectionIndex (Just pointIndex)))
+    li [ class "collection-item" ]
+        [ h5 [ class "header light" ]
+            [ a
+                [ class "btn-floating waves-effect waves-light"
+                , onClick (DeleteEntry (PointType sectionIndex (Just pointIndex)))
+                ]
+                [ i [ class "medium material-icons" ] [ text "delete" ] ]
+            , buttonSpacer
+            , a
+                [ class "btn-floating waves-effect waves-light"
+                , onClick (EditEntry (PointType sectionIndex (Just pointIndex)))
+                ]
+                [ i [ class "medium material-icons" ] [ text "edit" ] ]
+            , buttonSpacer
+            , text point.title
+            , buttonSpacer
+            , span [ class "duration" ] [ text (secondsToDuration point.duration) ]
+            , buttonSpacer
             ]
-            [ i [ class "tiny material-icons" ] [ text "delete" ] ]
-        , a
-            [ class "waves-effect waves-light point-button"
-            , onClick (EditEntry (PointType sectionIndex (Just pointIndex)))
-            ]
-            [ i [ class "tiny material-icons" ] [ text "edit" ] ]
         ]

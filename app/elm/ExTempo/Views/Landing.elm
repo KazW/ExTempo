@@ -7,4 +7,4 @@ import Html.Attributes exposing (..)
 
 landingView : Model -> Html Msg
 landingView model =
-    div [ class "row" ] []
+    div [ class "row" ] [ text "TODO: Make a landing page" ]

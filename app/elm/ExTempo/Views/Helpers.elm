@@ -1,7 +1,10 @@
 module ExTempo.Views.Helpers exposing (..)
 
+import ExTempo.Models exposing (..)
 import ExTempo.Time exposing (..)
 import Array exposing (..)
+import Html exposing (..)
+import Html.Attributes exposing (..)
 
 
 stringToInt : String -> Int
@@ -84,3 +87,16 @@ secondsToTime time =
                 ]
     in
         times |> String.join ":"
+
+
+listToTable : List ( String, String ) -> Html Msg
+listToTable list =
+    table [ class "responsive-table" ] (List.map tupleToRow list)
+
+
+tupleToRow : ( String, String ) -> Html Msg
+tupleToRow ( cell1, cell2 ) =
+    tr []
+        [ td [ class "right" ] [ text cell1 ]
+        , td [] [ text cell2 ]
+        ]
