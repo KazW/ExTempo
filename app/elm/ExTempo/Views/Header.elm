@@ -21,7 +21,7 @@ headerButton model =
             if model.action == Talking then
                 "stop talk"
             else if model.talk.duration == 0 then
-                "enter talk details"
+                "set main topic"
             else
                 "start talk"
 
